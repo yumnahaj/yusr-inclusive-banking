@@ -32,7 +32,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   const bankingOptions = [
     {
       icon: <CreditCard className="w-8 h-8" />,
-      signIcon: <SignLanguageIcon type="balance" className="w-8 h-8" />,
+      signIcon: "balance",
       title: "رصيدي الحالي",
       description: "عرض الرصيد مع فيديو لغة الإشارة",
       color: "from-blue-500 to-blue-600",
@@ -40,7 +40,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
     },
     {
       icon: <FileText className="w-8 h-8" />,
-      signIcon: <SignLanguageIcon type="statement" className="w-8 h-8" />,
+      signIcon: "statement",
       title: "كشف الحساب",
       description: "عرض العمليات مع الشرح بلغة الإشارة",
       color: "from-green-500 to-green-600",
@@ -48,7 +48,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
     },
     {
       icon: <MessageSquare className="w-8 h-8" />,
-      signIcon: <SignLanguageIcon type="transfer" className="w-8 h-8" />,
+      signIcon: "transfer",
       title: "تحويل أموال",
       description: "نموذج تحويل مع فيديو توضيحي",
       color: "from-purple-500 to-purple-600",
@@ -56,7 +56,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
     },
     {
       icon: <Settings className="w-8 h-8" />,
-      signIcon: <SignLanguageIcon type="help" className="w-8 h-8" />,
+      signIcon: "help",
       title: "مساعدة فورية",
       description: "محادثة نصية أو فيديو بلغة الإشارة",
       color: "from-orange-500 to-orange-600",
@@ -176,15 +176,16 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                     aria-label={option.title}
                   >
                     <div className="flex items-center gap-6 w-full">
-                      <div className={`bg-gradient-to-br ${option.color} p-6 rounded-2xl text-white shadow-lg flex-shrink-0 flex flex-col items-center gap-2`}>
-                        {option.icon}
-                        {option.signIcon}
+                      <div className="flex items-center gap-3">
+                        <SignLanguageIcon type={option.signIcon as any} className="w-12 h-12" />
+                        <div className={`bg-gradient-to-br ${option.color} p-6 rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center`}>
+                          {option.icon}
+                        </div>
                       </div>
                       <div className="text-right flex-1">
                         <h3 className="text-2xl font-bold mb-2">{option.title}</h3>
                         <p className="text-muted-foreground text-lg">{option.description}</p>
                       </div>
-                      
                     </div>
                   </Button>
                 </CardContent>
