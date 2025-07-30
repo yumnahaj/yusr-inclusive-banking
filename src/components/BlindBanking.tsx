@@ -184,7 +184,7 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
   }, [awaitingConfirmation, pendingAction]);
 
   return (
-    <div className={`min-h-screen p-6 ${highContrast ? 'bg-black text-white' : 'bg-background'}`} role="main" aria-label="واجهة البنك للمكفوفين">
+    <div className={`min-h-screen p-6 transition-all duration-500 ${highContrast ? 'bg-black text-yellow-400' : 'bg-background text-foreground'}`} role="main" aria-label="واجهة البنك للمكفوفين">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,9 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               onClick={onBack}
               variant="outline"
               size="lg"
-              className={`flex items-center gap-2 text-xl p-6 ${highContrast ? 'border-white text-white hover:bg-white hover:text-black' : ''}`}
+              className={`flex items-center gap-2 text-xl p-6 transition-all duration-300 ${
+                highContrast ? 'border-yellow-400 text-yellow-400 bg-black hover:bg-yellow-400 hover:text-black' : ''
+              }`}
               aria-label="العودة للصفحة السابقة"
               onFocus={() => speakText("زر العودة")}
             >
@@ -210,7 +212,9 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               onClick={() => handleSingleClick("high-contrast")}
               variant="outline"
               size="lg"
-              className={`flex items-center gap-2 text-xl p-6 ${highContrast ? 'border-white text-white hover:bg-white hover:text-black' : ''}`}
+              className={`flex items-center gap-2 text-xl p-6 transition-all duration-300 ${
+                highContrast ? 'border-yellow-400 text-yellow-400 bg-black hover:bg-yellow-400 hover:text-black' : ''
+              }`}
               aria-label="تبديل وضع التباين العالي لضعاف البصر"
               onFocus={() => speakText("زر التباين العالي")}
             >
