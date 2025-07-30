@@ -76,11 +76,45 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
     }
     
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.8;
-      speechRef.current = utterance;
-      speechSynthesis.speak(utterance);
+      // Wait for voices to load on mobile
+      const loadVoices = () => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Better mobile support
+        const voices = speechSynthesis.getVoices();
+        const arabicVoice = voices.find(voice => 
+          voice.lang.includes('ar') || voice.name.includes('Arabic')
+        );
+        
+        if (arabicVoice) {
+          utterance.voice = arabicVoice;
+        }
+        
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        
+        // Mobile browsers require user interaction
+        utterance.onstart = () => console.log('Speech started');
+        utterance.onerror = (event) => {
+          console.error('Speech error:', event);
+          // Fallback: show visual indicator
+          setIsListening(false);
+        };
+        
+        speechRef.current = utterance;
+        speechSynthesis.speak(utterance);
+      };
+      
+      // Handle mobile voice loading
+      if (speechSynthesis.getVoices().length === 0) {
+        speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true });
+      } else {
+        loadVoices();
+      }
+    } else {
+      console.warn('Speech synthesis not supported');
     }
   };
 
@@ -184,27 +218,27 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
   }, [awaitingConfirmation, pendingAction]);
 
   return (
-    <div className={`min-h-screen p-6 transition-all duration-500 ${highContrast ? 'bg-black text-yellow-400' : 'bg-background text-foreground'}`} role="main" aria-label="واجهة البنك للمكفوفين">
+    <div className={`min-h-screen p-3 sm:p-6 transition-all duration-500 ${highContrast ? 'high-contrast bg-black text-yellow-400' : 'bg-background text-foreground'}`} role="main" aria-label="واجهة البنك للمكفوفين">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-4xl mx-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
             <Button
               onClick={onBack}
               variant="outline"
               size="lg"
-              className={`flex items-center gap-2 text-xl p-6 transition-all duration-300 ${
+              className={`flex items-center gap-2 text-base sm:text-xl p-4 sm:p-6 transition-all duration-300 min-h-[60px] touch-manipulation ${
                 highContrast ? 'border-yellow-400 text-yellow-400 bg-black hover:bg-yellow-400 hover:text-black' : ''
               }`}
               aria-label="العودة للصفحة السابقة"
               onFocus={() => speakText("زر العودة")}
             >
-              <ArrowLeft className="w-6 h-6" />
+              <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
               العودة
             </Button>
             
@@ -212,37 +246,38 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               onClick={() => handleSingleClick("high-contrast")}
               variant="outline"
               size="lg"
-              className={`flex items-center gap-2 text-xl p-6 transition-all duration-300 ${
+              className={`flex items-center gap-2 text-base sm:text-xl p-4 sm:p-6 transition-all duration-300 min-h-[60px] touch-manipulation ${
                 highContrast ? 'border-yellow-400 text-yellow-400 bg-black hover:bg-yellow-400 hover:text-black' : ''
               }`}
               aria-label="تبديل وضع التباين العالي لضعاف البصر"
               onFocus={() => speakText("زر التباين العالي")}
             >
-              <Palette className="w-6 h-6" />
-              {highContrast ? 'إيقاف' : 'تفعيل'} التباين العالي
+              <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="hidden sm:inline">{highContrast ? 'إيقاف' : 'تفعيل'} التباين العالي</span>
+              <span className="sm:hidden">تباين</span>
             </Button>
           </div>
           
-          <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-16 h-16" />
-            <h1 className={`text-3xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`}>يُسر للمكفوفين</h1>
+          <div className="flex items-center gap-3 order-first sm:order-last">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-16 sm:h-16" />
+            <h1 className={`text-xl sm:text-3xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`}>يُسر للمكفوفين</h1>
           </div>
         </div>
 
         {/* Voice Status */}
         {isListening && (
-          <div className="mb-6 text-center">
-            <div className={`rounded-xl p-4 ${highContrast ? 'bg-white/20 border border-white' : 'bg-primary/20'}`}>
-              <p className={`font-bold text-xl ${highContrast ? 'text-white' : 'text-primary'}`}>🎤 أستمع إليك الآن...</p>
+          <div className="mb-4 sm:mb-6 text-center">
+            <div className={`rounded-xl p-3 sm:p-4 ${highContrast ? 'bg-white/20 border border-white' : 'bg-primary/20'}`}>
+              <p className={`font-bold text-lg sm:text-xl ${highContrast ? 'text-white' : 'text-primary'}`}>🎤 أستمع إليك الآن...</p>
             </div>
           </div>
         )}
         
         {/* Confirmation Status */}
         {awaitingConfirmation && (
-          <div className="mb-6 text-center">
-            <div className={`rounded-xl p-4 ${highContrast ? 'bg-yellow-900 border border-yellow-400' : 'bg-yellow-100'}`}>
-              <p className={`font-bold text-xl ${highContrast ? 'text-yellow-400' : 'text-yellow-800'}`}>
+          <div className="mb-4 sm:mb-6 text-center">
+            <div className={`rounded-xl p-3 sm:p-4 ${highContrast ? 'bg-yellow-900 border border-yellow-400' : 'bg-yellow-100'}`}>
+              <p className={`font-bold text-lg sm:text-xl ${highContrast ? 'text-yellow-400' : 'text-yellow-800'}`}>
                 🔄 انتظار التأكيد - اضغط مرة أخرى أو قل "نعم"
               </p>
             </div>
@@ -253,10 +288,10 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         <motion.div
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
           <Card 
-            className={`text-center p-8 border-2 cursor-pointer transition-all duration-300 ${
+            className={`text-center p-4 sm:p-8 border-2 cursor-pointer transition-all duration-300 touch-manipulation ${
               highContrast 
                 ? 'border-white bg-black hover:bg-white/10' 
                 : 'border-primary hover:bg-primary/5'
@@ -268,17 +303,17 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
             aria-label={`رصيدك الحالي ${balance} ريال سعودي - اضغط مرتين للتأكيد`}
             onFocus={() => speakText("رصيدك الحالي")}
           >
-            <CardContent className="p-6">
-              <h2 className={`text-2xl font-bold mb-4 ${highContrast ? 'text-white' : 'text-primary'}`}>الرصيد الحالي</h2>
-              <p className={`text-6xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`}>{balance}</p>
-              <p className={`text-xl mt-2 ${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>ريال سعودي</p>
+            <CardContent className="p-4 sm:p-6">
+              <h2 className={`text-lg sm:text-2xl font-bold mb-3 sm:mb-4 ${highContrast ? 'text-white' : 'text-primary'}`}>الرصيد الحالي</h2>
+              <p className={`text-3xl sm:text-6xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`}>{balance}</p>
+              <p className={`text-base sm:text-xl mt-2 ${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>ريال سعودي</p>
             </CardContent>
           </Card>
         </motion.div>
 
         {/* Banking Options */}
-        <div className="space-y-6">
-          <h2 className={`text-2xl font-bold text-center mb-8 ${highContrast ? 'text-white' : 'text-primary'}`}>الخدمات البنكية</h2>
+        <div className="space-y-4 sm:space-y-6">
+          <h2 className={`text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-8 ${highContrast ? 'text-white' : 'text-primary'}`}>الخدمات البنكية</h2>
           
           {bankingOptions.map((option, index) => (
             <motion.div
@@ -289,32 +324,32 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card className={`overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 ${
+              <Card className={`overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 touch-manipulation ${
                 highContrast 
                   ? 'border-white hover:border-gray-300 bg-black' 
                   : 'hover:border-primary'
               }`}>
-                <CardContent className="p-8">
+                <CardContent className="p-4 sm:p-8">
                   <Button
                     onClick={() => handleSingleClick(option.title)}
                     onDoubleClick={handleDoubleClick}
-                    className={`w-full h-auto p-0 bg-transparent hover:bg-transparent text-right ${
+                    className={`w-full h-auto p-0 bg-transparent hover:bg-transparent text-right min-h-[80px] sm:min-h-[100px] ${
                       highContrast ? 'text-white' : 'text-foreground'
                     }`}
                     aria-label={`${option.ariaLabel} - اضغط مرتين للتأكيد`}
                     onFocus={() => speakText(option.title)}
                   >
-                    <div className="flex items-center gap-6 w-full">
-                      <div className={`p-6 rounded-2xl flex-shrink-0 ${
+                    <div className="flex items-center gap-4 sm:gap-6 w-full">
+                      <div className={`p-4 sm:p-6 rounded-2xl flex-shrink-0 ${
                         highContrast 
                           ? 'bg-white/20 text-white' 
                           : 'bg-primary/20 text-primary'
                       }`}>
-                        {option.icon}
+                        <div className="w-6 h-6 sm:w-8 sm:h-8">{option.icon}</div>
                       </div>
                       <div className="text-right flex-1">
-                        <h3 className={`text-2xl font-bold mb-2 ${highContrast ? 'text-white' : ''}`}>{option.title}</h3>
-                        <p className={`text-lg ${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>{option.description}</p>
+                        <h3 className={`text-lg sm:text-2xl font-bold mb-1 sm:mb-2 ${highContrast ? 'text-white' : ''}`}>{option.title}</h3>
+                        <p className={`text-sm sm:text-lg ${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>{option.description}</p>
                       </div>
                     </div>
                   </Button>
@@ -329,15 +364,15 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-12 text-center"
+          className="mt-8 sm:mt-12 text-center"
         >
-          <div className={`rounded-xl p-6 ${
+          <div className={`rounded-xl p-4 sm:p-6 ${
             highContrast 
               ? 'bg-white/10 border border-white' 
               : 'bg-accent/20'
           }`}>
-            <h3 className={`font-bold mb-2 ${highContrast ? 'text-white' : 'text-primary'}`}>💡 تعليمات الاستخدام</h3>
-            <p className={`${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>
+            <h3 className={`font-bold mb-2 text-sm sm:text-base ${highContrast ? 'text-white' : 'text-primary'}`}>💡 تعليمات الاستخدام</h3>
+            <p className={`text-xs sm:text-sm ${highContrast ? 'text-gray-300' : 'text-muted-foreground'}`}>
               اضغط على أي زر للاستماع للمحتوى • اضغط مرتين للتأكيد أو قل "نعم" • استخدم التباين العالي لضعاف البصر
             </p>
           </div>
