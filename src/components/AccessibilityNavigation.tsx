@@ -63,7 +63,7 @@ const AccessibilityNavigation = ({
           </Button>
           
           <div className="flex items-center gap-3">
-            <img src={yusrLogo} alt="يُسر" className="w-8 h-8" />
+            <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-8 h-8" />
             <h1 className="text-2xl font-bold text-primary">يُسر</h1>
           </div>
         </div>
