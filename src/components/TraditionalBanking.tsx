@@ -2,31 +2,52 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CreditCard, FileText, DollarSign, MapPin, Settings, Phone, Banknote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import yusrLogo from "@/assets/yusr-logo.png";
+import { useState } from "react";
+import BalanceView from "./BalanceView";
+import StatementView from "./StatementView";
+import TransferView from "./TransferView";
 
 interface TraditionalBankingProps {
   onBack: () => void;
 }
 
 const TraditionalBanking = ({ onBack }: TraditionalBankingProps) => {
+  const [currentView, setCurrentView] = useState<"main" | "balance" | "statement" | "transfer">("main");
+  const [balance] = useState("12,450");
+
+  if (currentView === "balance") {
+    return <BalanceView onBack={() => setCurrentView("main")} balance={balance} />;
+  }
+
+  if (currentView === "statement") {
+    return <StatementView onBack={() => setCurrentView("main")} />;
+  }
+
+  if (currentView === "transfer") {
+    return <TransferView onBack={() => setCurrentView("main")} />;
+  }
+
   const bankingServices = [
     {
       icon: <DollarSign className="w-8 h-8" />,
       title: "تحويل أموال",
       description: "تحويل سريع وآمن",
-      color: "bg-gradient-to-br from-green-500 to-green-600"
+      color: "bg-gradient-to-br from-green-500 to-green-600",
+      action: () => setCurrentView("transfer")
     },
     {
       icon: <FileText className="w-8 h-8" />,
       title: "كشف حساب",
       description: "عرض العمليات الأخيرة",
-      color: "bg-gradient-to-br from-blue-500 to-blue-600"
+      color: "bg-gradient-to-br from-blue-500 to-blue-600",
+      action: () => setCurrentView("statement")
     },
     {
       icon: <CreditCard className="w-8 h-8" />,
       title: "الرصيد الحالي",
-      description: "١٢,٤٥٠ ريال سعودي",
-      color: "bg-gradient-to-br from-purple-500 to-purple-600"
+      description: `${balance} ريال سعودي`,
+      color: "bg-gradient-to-br from-purple-500 to-purple-600",
+      action: () => setCurrentView("balance")
     },
     {
       icon: <MapPin className="w-8 h-8" />,
@@ -69,7 +90,7 @@ const TraditionalBanking = ({ onBack }: TraditionalBankingProps) => {
           </Button>
           
           <div className="flex items-center gap-3">
-            <img src={yusrLogo} alt="يُسر" className="w-8 h-8" />
+            <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-12 h-12" />
             <h1 className="text-2xl font-bold text-primary">يُسر</h1>
           </div>
         </div>
@@ -99,7 +120,10 @@ const TraditionalBanking = ({ onBack }: TraditionalBankingProps) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card className="h-full cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+              <Card 
+                className="h-full cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+                onClick={service.action}
+              >
                 <CardContent className="p-6 text-center">
                   <div className={`w-16 h-16 rounded-full ${service.color} flex items-center justify-center mx-auto mb-4 text-white shadow-lg`}>
                     {service.icon}

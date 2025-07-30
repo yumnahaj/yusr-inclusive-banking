@@ -18,7 +18,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
         transition={{ duration: 0.6 }}
         className="max-w-md w-full text-center"
       >
-        <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-24 h-14 mx-auto mb-8" />
+        <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-32 h-32 mx-auto mb-8" />
         
         <h1 className="text-hero text-white mb-4">مرحباً بك في يُسر</h1>
         <p className="text-white/80 text-lg mb-12">اختر طريقة الدخول المناسبة لك</p>

@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import SignLanguageIcon from "./SignLanguageIcon";
+import BalanceView from "./BalanceView";
+import StatementView from "./StatementView";
+import TransferView from "./TransferView";
 
 interface DeafBankingProps {
   onBack: () => void;
@@ -12,7 +15,19 @@ interface DeafBankingProps {
 const DeafBanking = ({ onBack }: DeafBankingProps) => {
   const [balance] = useState("12,345");
   const [showSignLanguageVideo, setShowSignLanguageVideo] = useState(false);
-  const [showBalance, setShowBalance] = useState(false);
+  const [currentView, setCurrentView] = useState<"main" | "balance" | "statement" | "transfer">("main");
+
+  if (currentView === "balance") {
+    return <BalanceView onBack={() => setCurrentView("main")} balance={balance} />;
+  }
+
+  if (currentView === "statement") {
+    return <StatementView onBack={() => setCurrentView("main")} />;
+  }
+
+  if (currentView === "transfer") {
+    return <TransferView onBack={() => setCurrentView("main")} />;
+  }
 
   const bankingOptions = [
     {
@@ -55,11 +70,20 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
       navigator.vibrate([200, 100, 200]);
     }
     
-    if (action === "balance") {
-      setShowBalance(true);
-    }
-    
-    setTimeout(() => setShowSignLanguageVideo(false), 3000);
+    setTimeout(() => {
+      setShowSignLanguageVideo(false);
+      switch (action) {
+        case "balance":
+          setCurrentView("balance");
+          break;
+        case "statement":
+          setCurrentView("statement");
+          break;
+        case "transfer":
+          setCurrentView("transfer");
+          break;
+      }
+    }, 3000);
   };
 
   return (
@@ -116,13 +140,16 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           animate={{ scale: 1 }}
           className="mb-12"
         >
-          <Card className="text-center p-8 border-2 border-primary">
+          <Card 
+            className="text-center p-8 border-2 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
+            onClick={() => handleOptionClick("balance")}
+          >
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold text-primary mb-4">💰 الرصيد الحالي</h2>
               <p className="text-6xl font-bold text-primary mb-2">{balance}</p>
               <p className="text-xl text-muted-foreground">ريال سعودي</p>
               <div className="mt-4 flex justify-center">
-                <span className="text-2xl">✅</span>
+                <SignLanguageIcon type="balance" className="w-12 h-12" />
               </div>
             </CardContent>
           </Card>

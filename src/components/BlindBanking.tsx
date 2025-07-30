@@ -40,7 +40,8 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
   ];
 
   useEffect(() => {
-    speakText("مرحباً بك في واجهة البنك للمكفوفين. يمكنك التنقل بين الأزرار بالترتيب أو استخدام الأوامر الصوتية");
+    const welcomeText = "مرحباً بك في واجهة البنك للمكفوفين. الخدمات المتاحة: رصيدك الحالي، كشف الحساب، تحويل أموال. لتنفيذ أي خدمة اضغط على الزر مرتين أو قل نعم.";
+    speakText(welcomeText);
     
     return () => {
       // Stop speech when component unmounts
@@ -57,7 +58,8 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         setTimeout(() => {
           const focusedElement = document.activeElement;
           if (focusedElement && focusedElement.getAttribute('aria-label')) {
-            speakText(focusedElement.getAttribute('aria-label') || '');
+            const text = focusedElement.textContent || focusedElement.getAttribute('aria-label') || '';
+            speakText(text);
           }
         }, 100);
       }
@@ -98,9 +100,24 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
     }
     
     if (clickCount === 0) {
+      // First speak what the button does, then ask for confirmation
+      let buttonDescription = "";
+      switch (action) {
+        case "رصيدي":
+          buttonDescription = "رصيدك الحالي";
+          break;
+        case "كشف الحساب":
+          buttonDescription = "كشف الحساب - عرض آخر العمليات";
+          break;
+        case "تحويل أموال":
+          buttonDescription = "تحويل أموال بالأمر الصوتي";
+          break;
+      }
+      
+      speakText(`${buttonDescription}. اضغط مرة أخرى للتأكيد أو قل نعم`);
+      
       clickTimeoutRef.current = setTimeout(() => {
         setClickCount(0);
-        speakText("اضغط مرة أخرى خلال ثانيتين للتأكيد، أو قل نعم");
         setAwaitingConfirmation(true);
         setPendingAction(action);
         
@@ -132,8 +149,9 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         setTimeout(() => setIsListening(false), 5000);
         break;
       case "high-contrast":
-        setHighContrast(!highContrast);
-        speakText(highContrast ? "تم إيقاف وضع التباين العالي" : "تم تفعيل وضع التباين العالي");
+        const newHighContrast = !highContrast;
+        setHighContrast(newHighContrast);
+        speakText(newHighContrast ? "تم تفعيل وضع التباين العالي" : "تم إيقاف وضع التباين العالي");
         break;
     }
   };

@@ -8,6 +8,7 @@ import DeafBanking from "@/components/DeafBanking";
 import MobilityBanking from "@/components/MobilityBanking";
 import EmergencyButton from "@/components/EmergencyButton";
 import VoiceVerification from "@/components/VoiceVerification";
+import FaceVerification from "@/components/FaceVerification";
 
 type AppState = 
   | "splash" 
@@ -17,7 +18,10 @@ type AppState =
   | "voice-verification"
   | "blind"
   | "deaf" 
-  | "mobility";
+  | "mobility"
+  | "face-verification-traditional"
+  | "face-verification-deaf"
+  | "face-verification-mobility";
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>("splash");
@@ -30,8 +34,35 @@ const Index = () => {
       case "main":
         return (
           <MainNavigation
-            onSelectBanking={() => setAppState("traditional")}
+            onSelectBanking={() => setAppState("face-verification-traditional")}
             onSelectAccessibility={() => setAppState("accessibility")}
+          />
+        );
+
+      case "face-verification-traditional":
+        return (
+          <FaceVerification 
+            onSuccess={() => setAppState("traditional")}
+            onCancel={() => setAppState("main")}
+            title="البنك التقليدي"
+          />
+        );
+
+      case "face-verification-deaf":
+        return (
+          <FaceVerification 
+            onSuccess={() => setAppState("deaf")}
+            onCancel={() => setAppState("accessibility")}
+            title="واجهة الصم والبكم"
+          />
+        );
+
+      case "face-verification-mobility":
+        return (
+          <FaceVerification 
+            onSuccess={() => setAppState("mobility")}
+            onCancel={() => setAppState("accessibility")}
+            title="واجهة ذوي الإعاقة الحركية"
           />
         );
       
@@ -43,8 +74,8 @@ const Index = () => {
           <AccessibilityNavigation
             onBack={() => setAppState("main")}
             onSelectBlind={() => setAppState("voice-verification")}
-            onSelectDeaf={() => setAppState("deaf")}
-            onSelectMobility={() => setAppState("mobility")}
+            onSelectDeaf={() => setAppState("face-verification-deaf")}
+            onSelectMobility={() => setAppState("face-verification-mobility")}
           />
         );
 
