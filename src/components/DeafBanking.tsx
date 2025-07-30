@@ -184,7 +184,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                         <h3 className="text-2xl font-bold mb-2">{option.title}</h3>
                         <p className="text-muted-foreground text-lg">{option.description}</p>
                       </div>
-                      <div className="text-3xl">👆</div>
+                      
                     </div>
                   </Button>
                 </CardContent>
