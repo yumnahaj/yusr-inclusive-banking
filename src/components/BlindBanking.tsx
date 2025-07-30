@@ -224,7 +224,7 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
           </div>
           
           <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-12 h-12" />
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-16 h-16" />
             <h1 className={`text-3xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`}>يُسر للمكفوفين</h1>
           </div>
         </div>

@@ -28,9 +28,9 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
       >
         <div className="text-center text-white">
           <motion.img
-            src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png"
+            src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png"
             alt="يُسر"
-            className="w-32 h-32 mx-auto mb-6"
+            className="w-40 h-40 mx-auto mb-6"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -64,9 +64,9 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
     >
       <div className="text-center text-white">
         <motion.img
-          src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png"
+          src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png"
           alt="يُسر"
-          className="w-32 h-32 mx-auto mb-6"
+          className="w-40 h-40 mx-auto mb-6"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}

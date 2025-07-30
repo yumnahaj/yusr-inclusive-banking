@@ -51,7 +51,7 @@ const FaceVerification = ({ onSuccess, onCancel, title }: FaceVerificationProps)
         <Card className="text-center border-2 border-primary">
           <CardContent className="p-8">
             <div className="mb-6">
-              <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-20 h-20 mx-auto mb-4" />
+              <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-24 h-24 mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-primary mb-2">{title}</h1>
               <p className="text-muted-foreground">التحقق من بصمة الوجه</p>
             </div>
