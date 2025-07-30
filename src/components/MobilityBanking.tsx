@@ -12,6 +12,13 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
   const [balance] = useState("12,345");
   const [controlMethod, setControlMethod] = useState<"voice" | "eye" | "gesture">("voice");
   const [isListening, setIsListening] = useState(false);
+  const [showBalance, setShowBalance] = useState(false);
+  const [showStatement, setShowStatement] = useState(false);
+  const [transactions] = useState([
+    { date: "2024-01-15", description: "تحويل إلى أحمد محمد", amount: "-500" },
+    { date: "2024-01-14", description: "إيداع راتب", amount: "+3000" },
+    { date: "2024-01-13", description: "سحب من الصراف", amount: "-200" },
+  ]);
 
   const controlMethods = [
     {
@@ -39,34 +46,62 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
       icon: <CreditCard className="w-12 h-12" />,
       title: "رصيدي الحالي",
       description: "عرض الرصيد الحالي",
-      voiceCommand: "أعرض رصيدي"
+      voiceCommand: "أعرض رصيدي",
+      gesture: "انظر للشاشة لمدة 3 ثوان",
+      action: "balance"
     },
     {
       icon: <FileText className="w-12 h-12" />,
       title: "كشف الحساب",
       description: "آخر العمليات البنكية",
-      voiceCommand: "افتح كشف الحساب"
+      voiceCommand: "افتح كشف الحساب",
+      gesture: "حرك رأسك لليمين ثم للأعلى",
+      action: "statement"
     },
     {
       icon: <Mic className="w-12 h-12" />,
       title: "تحويل أموال",
       description: "تحويل بالأمر الصوتي",
-      voiceCommand: "حول أموال"
+      voiceCommand: "حول أموال",
+      gesture: "أشر بإصبعك نحو الشاشة",
+      action: "transfer"
     }
   ];
 
-  const handleVoiceCommand = (command: string) => {
+  const handleVoiceCommand = (action: string) => {
     setIsListening(true);
-    
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(`تم تنفيذ أمر: ${command}`);
-      utterance.lang = 'ar-SA';
-      speechSynthesis.speak(utterance);
-    }
     
     // Simulate vibration feedback
     if ('vibrate' in navigator) {
       navigator.vibrate([100, 50, 100]);
+    }
+    
+    switch (action) {
+      case "balance":
+        setShowBalance(true);
+        setShowStatement(false);
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(`رصيدك الحالي ${balance} ريال سعودي`);
+          utterance.lang = 'ar-SA';
+          speechSynthesis.speak(utterance);
+        }
+        break;
+      case "statement":
+        setShowStatement(true);
+        setShowBalance(false);
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(`تم فتح كشف الحساب`);
+          utterance.lang = 'ar-SA';
+          speechSynthesis.speak(utterance);
+        }
+        break;
+      case "transfer":
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(`قل اسم المستفيد والمبلغ`);
+          utterance.lang = 'ar-SA';
+          speechSynthesis.speak(utterance);
+        }
+        break;
     }
     
     setTimeout(() => setIsListening(false), 2000);
@@ -152,7 +187,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
         >
           <Card 
             className="text-center p-12 border-4 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
-            onClick={() => handleVoiceCommand("عرض الرصيد")}
+            onClick={() => handleVoiceCommand("balance")}
             role="button"
             tabIndex={0}
           >
@@ -162,12 +197,87 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
               <p className="text-2xl text-muted-foreground">ريال سعودي</p>
               <div className="mt-6">
                 <p className="text-lg text-muted-foreground">
-                  قل: "أعرض رصيدي" أو انقر مرة واحدة
+                  {controlMethod === "voice" && "قل: 'أعرض رصيدي'"}
+                  {controlMethod === "eye" && "انظر للشاشة لمدة 3 ثوان"}
+                  {controlMethod === "gesture" && "أشر بإصبعك نحو الشاشة"}
                 </p>
               </div>
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Balance Details */}
+        {showBalance && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <Card className="border-2 border-green-500 bg-green-50">
+              <CardContent className="p-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-2xl font-bold text-green-700">تفاصيل الرصيد</h3>
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={() => setShowBalance(false)}
+                  >
+                    إغلاق
+                  </Button>
+                </div>
+                <div className="space-y-4 text-xl">
+                  <div className="flex justify-between">
+                    <span>الرصيد المتاح:</span>
+                    <span className="font-bold text-green-600">{balance} ريال</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>الرصيد المحجوز:</span>
+                    <span className="font-bold text-orange-600">0 ريال</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Statement Details */}
+        {showStatement && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <Card className="border-2 border-blue-500 bg-blue-50">
+              <CardContent className="p-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-2xl font-bold text-blue-700">كشف الحساب</h3>
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={() => setShowStatement(false)}
+                  >
+                    إغلاق
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {transactions.map((transaction, index) => (
+                    <div key={index} className="flex justify-between items-center p-4 bg-white rounded-lg text-lg">
+                      <div>
+                        <p className="font-semibold">{transaction.description}</p>
+                        <p className="text-muted-foreground">{transaction.date}</p>
+                      </div>
+                      <span className={`font-bold ${
+                        transaction.amount.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {transaction.amount} ريال
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Banking Options - Large and Spaced */}
         <div className="space-y-8">
@@ -185,7 +295,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
               <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-3 hover:border-primary">
                 <CardContent className="p-12">
                   <Button
-                    onClick={() => handleVoiceCommand(option.title)}
+                    onClick={() => handleVoiceCommand(option.action)}
                     className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground"
                     aria-label={`${option.title} - ${option.voiceCommand}`}
                   >
@@ -196,9 +306,14 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                       <div className="text-right flex-1">
                         <h3 className="text-3xl font-bold mb-3">{option.title}</h3>
                         <p className="text-muted-foreground text-xl mb-2">{option.description}</p>
-                        <p className="text-primary font-semibold text-lg">
-                          🎤 قل: "{option.voiceCommand}"
-                        </p>
+                        <div className="space-y-2">
+                          <p className="text-primary font-semibold text-lg">
+                            🎤 صوتي: "{option.voiceCommand}"
+                          </p>
+                          <p className="text-blue-600 font-semibold text-lg">
+                            👁️ بصري: {option.gesture}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </Button>

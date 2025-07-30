@@ -7,12 +7,14 @@ import BlindBanking from "@/components/BlindBanking";
 import DeafBanking from "@/components/DeafBanking";
 import MobilityBanking from "@/components/MobilityBanking";
 import EmergencyButton from "@/components/EmergencyButton";
+import VoiceVerification from "@/components/VoiceVerification";
 
 type AppState = 
   | "splash" 
   | "main" 
   | "traditional" 
   | "accessibility"
+  | "voice-verification"
   | "blind"
   | "deaf" 
   | "mobility";
@@ -40,9 +42,17 @@ const Index = () => {
         return (
           <AccessibilityNavigation
             onBack={() => setAppState("main")}
-            onSelectBlind={() => setAppState("blind")}
+            onSelectBlind={() => setAppState("voice-verification")}
             onSelectDeaf={() => setAppState("deaf")}
             onSelectMobility={() => setAppState("mobility")}
+          />
+        );
+
+      case "voice-verification":
+        return (
+          <VoiceVerification
+            onVerified={() => setAppState("blind")}
+            onBack={() => setAppState("accessibility")}
           />
         );
 

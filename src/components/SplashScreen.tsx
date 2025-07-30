@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import yusrLogo from "@/assets/yusr-logo.png";
+// Using the new logo from Supabase
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -28,9 +28,9 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
       >
         <div className="text-center text-white">
           <motion.img
-            src={yusrLogo}
+            src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png"
             alt="يُسر"
-            className="w-32 h-18 mx-auto mb-6"
+            className="w-32 h-32 mx-auto mb-6"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -64,9 +64,9 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
     >
       <div className="text-center text-white">
         <motion.img
-          src={yusrLogo}
+          src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png"
           alt="يُسر"
-          className="w-32 h-18 mx-auto mb-6"
+          className="w-32 h-32 mx-auto mb-6"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}

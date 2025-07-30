@@ -3,6 +3,7 @@ import { ArrowLeft, MessageSquare, CreditCard, FileText, Settings } from "lucide
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import SignLanguageIcon from "./SignLanguageIcon";
 
 interface DeafBankingProps {
   onBack: () => void;
@@ -11,39 +12,51 @@ interface DeafBankingProps {
 const DeafBanking = ({ onBack }: DeafBankingProps) => {
   const [balance] = useState("12,345");
   const [showSignLanguageVideo, setShowSignLanguageVideo] = useState(false);
+  const [showBalance, setShowBalance] = useState(false);
 
   const bankingOptions = [
     {
       icon: <CreditCard className="w-8 h-8" />,
+      signIcon: <SignLanguageIcon type="balance" className="w-8 h-8" />,
       title: "رصيدي الحالي",
       description: "عرض الرصيد مع فيديو لغة الإشارة",
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-blue-600",
+      action: "balance"
     },
     {
       icon: <FileText className="w-8 h-8" />,
+      signIcon: <SignLanguageIcon type="statement" className="w-8 h-8" />,
       title: "كشف الحساب",
       description: "عرض العمليات مع الشرح بلغة الإشارة",
-      color: "from-green-500 to-green-600"
+      color: "from-green-500 to-green-600",
+      action: "statement"
     },
     {
       icon: <MessageSquare className="w-8 h-8" />,
+      signIcon: <SignLanguageIcon type="transfer" className="w-8 h-8" />,
       title: "تحويل أموال",
       description: "نموذج تحويل مع فيديو توضيحي",
-      color: "from-purple-500 to-purple-600"
+      color: "from-purple-500 to-purple-600",
+      action: "transfer"
     },
     {
       icon: <Settings className="w-8 h-8" />,
+      signIcon: <SignLanguageIcon type="help" className="w-8 h-8" />,
       title: "مساعدة فورية",
       description: "محادثة نصية أو فيديو بلغة الإشارة",
-      color: "from-orange-500 to-orange-600"
+      color: "from-orange-500 to-orange-600",
+      action: "help"
     }
   ];
 
-  const handleOptionClick = (title: string) => {
+  const handleOptionClick = (action: string) => {
     setShowSignLanguageVideo(true);
-    // Simulate vibration for deaf users
     if ('vibrate' in navigator) {
       navigator.vibrate([200, 100, 200]);
+    }
+    
+    if (action === "balance") {
+      setShowBalance(true);
     }
     
     setTimeout(() => setShowSignLanguageVideo(false), 3000);
@@ -131,13 +144,14 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
               <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary">
                 <CardContent className="p-8">
                   <Button
-                    onClick={() => handleOptionClick(option.title)}
+                    onClick={() => handleOptionClick(option.action)}
                     className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground"
                     aria-label={option.title}
                   >
                     <div className="flex items-center gap-6 w-full">
-                      <div className={`bg-gradient-to-br ${option.color} p-6 rounded-2xl text-white shadow-lg flex-shrink-0`}>
+                      <div className={`bg-gradient-to-br ${option.color} p-6 rounded-2xl text-white shadow-lg flex-shrink-0 flex flex-col items-center gap-2`}>
                         {option.icon}
+                        {option.signIcon}
                       </div>
                       <div className="text-right flex-1">
                         <h3 className="text-2xl font-bold mb-2">{option.title}</h3>
