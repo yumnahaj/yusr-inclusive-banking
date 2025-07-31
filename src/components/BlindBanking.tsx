@@ -304,7 +304,7 @@ const BlindBanking = ({
                   <Button onClick={() => handleSingleClick(option.title)} onDoubleClick={handleDoubleClick} className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-right min-h-[80px] sm:min-h-[120px] text-foreground" aria-label={`${option.ariaLabel} - اضغط مرتين للتأكيد`} onFocus={() => speakText(option.title)}>
                     <div className="flex items-center gap-4 sm:gap-6 md:gap-8 w-full">
                       <div className="p-4 sm:p-6 md:p-8 rounded-2xl flex-shrink-0 bg-primary/20 text-primary">
-                        <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-2xl">{option.icon}</div>
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-2xl text-2xl sm:text-4xl md:text-5xl flex items-center justify-center">{option.icon}</div>
                       </div>
                       <div className="text-right flex-1 min-w-0">
                         <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 truncate">{option.title}</h3>
