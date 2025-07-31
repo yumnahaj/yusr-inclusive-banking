@@ -74,15 +74,8 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
   if (!isVisible) return null;
 
   // Show fallback interface if gesture recognition is not supported
-  if (showFallback || (!capabilities.supportsMediaPipe && !isCameraActive)) {
-    return (
-      <FallbackGestureInterface
-        onGestureDetected={onGestureDetected}
-        isVisible={isVisible}
-        onClose={onClose}
-      />
-    );
-  }
+if (!isVisible) return null;
+
 
   return (
     <GestureErrorBoundary
