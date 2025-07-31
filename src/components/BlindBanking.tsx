@@ -308,7 +308,7 @@ const BlindBanking = ({
                       </div>
                       <div className="text-right flex-1 min-w-0">
                         <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 truncate">{option.title}</h3>
-                        <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-tight">{option.description}</p>
+                        <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-tight"></p>
                       </div>
                     </div>
                   </Button>
