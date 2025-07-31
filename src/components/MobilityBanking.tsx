@@ -149,7 +149,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                   <div className="w-5 h-5 sm:w-6 sm:h-6">{method.icon}</div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-xs sm:text-sm leading-tight">{method.title.replace(/🎤|👁️|🤚/g, '').trim()}</p>
-                    <p className="text-xs opacity-70 leading-tight">{method.description}</p>
+                    
                   </div>
                 </div>
               </Button>
