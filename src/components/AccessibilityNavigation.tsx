@@ -21,21 +21,21 @@ const AccessibilityNavigation = ({
   const accessibilityOptions = [
     {
       icon: <Eye className="w-12 h-12" />,
-      title: "🧑‍🦯 واجهة المكفوفين",
+      title: "🧑‍🦯 المكفوفين",
       description: "تحكم صوتي كامل وقراءة واضحة",
       onClick: onSelectBlind,
       color: "from-indigo-500 to-purple-600"
     },
     {
       icon: <EarOff className="w-12 h-12" />,
-      title: "🧏‍♂️ واجهة الصم والبكم", 
+      title: "🧏‍♂️ الصم والبكم", 
       description: "لغة الإشارة ومحادثة نصية",
       onClick: onSelectDeaf,
       color: "from-teal-500 to-cyan-600"
     },
     {
       icon: <HandHeart className="w-12 h-12" />,
-      title: "🧑‍🦽 واجهة ذوي الإعاقة الحركية",
+      title: "🧑‍🦽 ذوي الإعاقة الحركية",
       description: "تحكم بالصوت والإيماءات",
       onClick: onSelectMobility,
       color: "from-rose-500 to-pink-600"
