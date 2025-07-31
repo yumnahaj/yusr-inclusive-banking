@@ -19,6 +19,8 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   const [showSignLanguageVideo, setShowSignLanguageVideo] = useState(false);
   const [currentView, setCurrentView] = useState<"main" | "balance" | "statement" | "transfer">("main");
   const [showHandGestureCamera, setShowHandGestureCamera] = useState(false);
+  const [gestureProcessing, setGestureProcessing] = useState(false);
+  const [detectedGestureAction, setDetectedGestureAction] = useState("");
 
   if (currentView === "balance") {
     return <BalanceView onBack={() => setCurrentView("main")} balance={balance} />;
@@ -88,9 +90,6 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
       }
     }, 3000);
   };
-
-  const [gestureProcessing, setGestureProcessing] = useState(false);
-  const [detectedGestureAction, setDetectedGestureAction] = useState("");
 
   // تحويل الإيماءة إلى إجراء
   const handleGestureDetected = (gesture: GestureType) => {
