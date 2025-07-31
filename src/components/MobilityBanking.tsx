@@ -292,28 +292,22 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 sm:border-3 hover:border-primary">
-                <CardContent className="p-4 sm:p-6 md:p-8 lg:p-12">
+              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary">
+                <CardContent className="p-6 sm:p-8">
                   <Button
                     onClick={() => handleVoiceCommand(option.action)}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px] md:min-h-[120px]"
+                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px]"
                     aria-label={`${option.title} - ${option.voiceCommand}`}
                   >
-                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8 w-full">
-                      <div className="bg-primary/20 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl text-primary flex-shrink-0">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">{option.icon}</div>
+                    <div className="flex items-center gap-6 w-full">
+                      <div className="bg-primary/20 p-4 rounded-xl text-primary flex-shrink-0">
+                        <div className="w-10 h-10">{option.icon}</div>
                       </div>
-                      <div className="text-center sm:text-right flex-1 min-w-0">
-                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 leading-tight">{option.title}</h3>
-                        <p className="text-muted-foreground text-sm sm:text-base md:text-lg lg:text-xl mb-2 leading-tight">{option.description}</p>
-                        <div className="space-y-1 sm:space-y-2">
-                          <p className="text-primary font-semibold text-xs sm:text-sm md:text-base lg:text-lg leading-tight">
-                            🎤 صوتي: "{option.voiceCommand}"
-                          </p>
-                          <p className="text-blue-600 font-semibold text-xs sm:text-sm md:text-base lg:text-lg leading-tight">
-                            👁️ بصري: {option.gesture}
-                          </p>
-                        </div>
+                      <div className="text-right flex-1">
+                        <h3 className="text-xl sm:text-2xl font-bold mb-2">{option.title}</h3>
+                        <p className="text-primary font-medium text-base">
+                          🎤 "{option.voiceCommand}"
+                        </p>
                       </div>
                     </div>
                   </Button>
