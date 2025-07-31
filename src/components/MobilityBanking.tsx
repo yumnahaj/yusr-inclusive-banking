@@ -117,20 +117,22 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
       >
         {/* Header */}
         <div className="mb-4 sm:mb-6 md:mb-8">
-          <Button
-            onClick={onBack}
-            variant="outline"
-            size="lg"
-            className="flex items-center gap-2 text-sm sm:text-base md:text-xl p-3 sm:p-4 md:p-6 min-h-[44px] mb-4"
-            aria-label="العودة للصفحة السابقة"
-          >
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-            العودة
-          </Button>
-          
-          <div className="flex items-center justify-center gap-2 sm:gap-3">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
-            <h1 className="text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl font-bold text-primary text-center leading-tight">يُسر لذوي الإعاقة الحركية</h1>
+          <div className="flex items-center justify-between gap-2 sm:gap-3 mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
+              <h1 className="text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl font-bold text-primary leading-tight">يُسر لذوي الإعاقة الحركية</h1>
+            </div>
+            
+            <Button
+              onClick={onBack}
+              variant="outline"
+              size="lg"
+              className="flex items-center gap-2 text-sm sm:text-base md:text-xl p-3 sm:p-4 md:p-6 min-h-[44px]"
+              aria-label="العودة للصفحة السابقة"
+            >
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+              العودة
+            </Button>
           </div>
         </div>
 

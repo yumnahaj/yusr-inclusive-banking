@@ -18,6 +18,11 @@ const BalanceView = ({ onBack, balance }: BalanceViewProps) => {
         className="max-w-lg sm:max-w-2xl mx-auto"
       >
         <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-16 sm:h-16" />
+            <h1 className="text-lg sm:text-2xl font-bold text-primary">الرصيد الحالي</h1>
+          </div>
+          
           <Button
             onClick={onBack}
             variant="outline"
@@ -27,11 +32,6 @@ const BalanceView = ({ onBack, balance }: BalanceViewProps) => {
             <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             العودة
           </Button>
-          
-          <div className="flex items-center gap-2 sm:gap-3">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-16 sm:h-16" />
-            <h1 className="text-lg sm:text-2xl font-bold text-primary">الرصيد الحالي</h1>
-          </div>
         </div>
 
         <Card className="text-center gradient-primary text-white border-0 mx-2 sm:mx-0">

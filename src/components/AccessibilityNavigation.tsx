@@ -60,6 +60,16 @@ const AccessibilityNavigation = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-8 sm:mb-10">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <img 
+              src="/lovable-uploads/0be8718c-b956-4dcc-89a2-2b848343e3b4.png" 
+              alt="شعار تطبيق يُسر البنكي" 
+              className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16"
+              role="img"
+            />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary" id="page-title">يُسر</h1>
+          </div>
+          
           <Button
             onClick={onBack}
             variant="outline"
@@ -71,16 +81,6 @@ const AccessibilityNavigation = ({
             <ArrowLeft className="w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
             العودة
           </Button>
-          
-          <div className="flex items-center gap-3 sm:gap-4">
-            <img 
-              src="/lovable-uploads/0be8718c-b956-4dcc-89a2-2b848343e3b4.png" 
-              alt="شعار تطبيق يُسر البنكي" 
-              className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16"
-              role="img"
-            />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary" id="page-title">يُسر</h1>
-          </div>
         </div>
 
         {/* Title */}
