@@ -118,7 +118,7 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
 
           {/* منطقة الكاميرا */}
           <div className="relative mb-6">
-            <div className="bg-gray-100 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+            <div className="bg-gray-100 rounded-lg overflow-hidden w-full max-w-md aspect-[4/3] flex items-center justify-center">
               {isCameraActive ? (
                 <div className="relative w-full h-full">
                   <video
