@@ -74,9 +74,9 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
           >
             <Card className="overflow-hidden border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
               <CardContent className="p-6 sm:p-8 md:p-10">
-                <Button
+                <div
                   onClick={onSelectAccessibility}
-                  className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px]"
+                  className="w-full h-auto p-0 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
                   aria-label="الدخول لواجهة ذوي الهمم - خدمات متخصصة وسهلة الوصول"
                   role="menuitem"
                   tabIndex={0}
@@ -88,7 +88,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                       <p className="text-white/70 text-lg sm:text-xl leading-tight">خدمات متخصصة وسهلة الوصول</p>
                     </div>
                   </div>
-                </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
