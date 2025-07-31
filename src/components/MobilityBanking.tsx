@@ -305,9 +305,6 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                       </div>
                       <div className="text-right flex-1">
                         <h3 className="text-xl sm:text-2xl font-bold mb-2">{option.title}</h3>
-                        <p className="text-primary font-medium text-base">
-                          🎤 "{option.voiceCommand}"
-                        </p>
                       </div>
                     </div>
                   </Button>
