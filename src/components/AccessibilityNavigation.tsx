@@ -43,7 +43,7 @@ const AccessibilityNavigation = ({
   ];
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -54,45 +54,45 @@ const AccessibilityNavigation = ({
             duration: 0.01
           })
         }}
-        className="max-w-2xl mx-auto"
+        className="max-w-lg sm:max-w-2xl mx-auto"
         role="navigation"
         aria-label="خيارات الوصولية"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
           <Button
             onClick={onBack}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 btn-accessible"
+            className="flex items-center gap-2 btn-accessible text-sm sm:text-base px-3 sm:px-4"
             aria-label="العودة إلى الصفحة الرئيسية"
             role="button"
           >
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             العودة
           </Button>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <img 
               src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" 
               alt="شعار تطبيق يُسر البنكي" 
-              className="w-8 h-8"
+              className="w-6 h-6 sm:w-8 sm:h-8"
               role="img"
             />
-            <h1 className="text-2xl font-bold text-primary" id="page-title">يُسر</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-primary" id="page-title">يُسر</h1>
           </div>
         </div>
 
         {/* Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4" id="section-title">اختر نوع المساعدة</h2>
-          <p className="text-muted-foreground text-lg" role="doc-subtitle">
+        <div className="text-center mb-8 sm:mb-12 px-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3 sm:mb-4 leading-tight" id="section-title">اختر نوع المساعدة</h2>
+          <p className="text-muted-foreground text-base sm:text-lg leading-relaxed" role="doc-subtitle">
             صُممت واجهاتنا خصيصاً لتناسب احتياجاتك
           </p>
         </div>
 
         {/* Accessibility Options */}
-        <div className="space-y-6" role="menu" aria-labelledby="section-title">
+        <div className="space-y-4 sm:space-y-6" role="menu" aria-labelledby="section-title">
           {accessibilityOptions.map((option, index) => (
             <motion.div
               key={option.title}
@@ -117,21 +117,23 @@ const AccessibilityNavigation = ({
             >
               <Button
                 onClick={option.onClick}
-                className="w-full h-auto p-6 bg-transparent hover:bg-accent/10 text-foreground btn-accessible rounded-2xl border-0 transition-all duration-300 hover:scale-[1.02]"
+                className="w-full h-auto p-4 sm:p-6 bg-transparent hover:bg-accent/10 text-foreground btn-accessible rounded-2xl border-0 transition-all duration-300 hover:scale-[1.02] min-h-[80px] sm:min-h-[100px]"
                 aria-label={`${option.title} - ${option.description}`}
                 role="menuitem"
                 tabIndex={0}
               >
-                <div className="flex items-center gap-6 w-full">
-                  <div className={`bg-gradient-to-br ${option.color} p-4 rounded-2xl text-white shadow-lg flex-shrink-0`}>
-                    {option.icon}
+                <div className="flex items-center gap-4 sm:gap-6 w-full">
+                  <div className={`bg-gradient-to-br ${option.color} p-3 sm:p-4 rounded-2xl text-white shadow-lg flex-shrink-0`}>
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
+                      {option.icon}
+                    </div>
                   </div>
-                  <div className="text-right flex-1">
-                    <h3 className="text-xl font-bold mb-2 text-foreground" id={`option-${index}-title`}>
+                  <div className="text-right flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 text-foreground truncate" id={`option-${index}-title`}>
                       {option.title}
                     </h3>
                     <p 
-                      className="text-muted-foreground" 
+                      className="text-muted-foreground text-sm sm:text-base leading-tight" 
                       id={`option-${index}-description`}
                       aria-describedby={`option-${index}-title`}
                     >
