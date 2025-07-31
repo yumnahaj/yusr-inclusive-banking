@@ -1,3 +1,4 @@
+import { useEffect } from 'react'; // تأكدي إنها مضافة فوق
 import { motion } from "framer-motion";
 import { Camera, CameraOff, Hand, RotateCcw, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
