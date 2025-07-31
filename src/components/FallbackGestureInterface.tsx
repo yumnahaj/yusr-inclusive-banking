@@ -74,13 +74,7 @@ const FallbackGestureInterface = ({ onGestureDetected, isVisible, onClose }: Fal
             </Button>
           </div>
 
-          {/* معلومات تفسيرية */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <h3 className="font-bold text-lg mb-2">🔄 وضع التحكم التفاعلي</h3>
-            <p className="text-gray-700 text-sm">
-              تتبع الإيماءات غير متاح على هذا الجهاز. يمكنك استخدام الأزرار التفاعلية أدناه للتنقل في التطبيق.
-            </p>
-          </div>
+       
 
           {/* أزرار الإيماءات البديلة */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
