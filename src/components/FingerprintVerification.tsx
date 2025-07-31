@@ -16,10 +16,55 @@ const FingerprintVerification = ({ onVerified, onBack }: FingerprintVerification
 
   const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.8;
-      speechSynthesis.speak(utterance);
+      // Stop any previous speech
+      window.speechSynthesis.cancel();
+      
+      const speak = () => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Get available voices and find Arabic voice
+        const voices = window.speechSynthesis.getVoices();
+        const arabicVoice = voices.find(voice => 
+          voice.lang.includes('ar') || 
+          voice.name.toLowerCase().includes('arabic') ||
+          voice.name.toLowerCase().includes('عربي')
+        );
+        
+        if (arabicVoice) {
+          utterance.voice = arabicVoice;
+        }
+        
+        // Optimized settings for mobile devices
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.7; // Slower rate for better clarity on mobile
+        utterance.pitch = 1;
+        utterance.volume = 0.9;
+        
+        // Error handling
+        utterance.onerror = (event) => {
+          console.log('Speech synthesis error:', event.error);
+        };
+        
+        window.speechSynthesis.speak(utterance);
+      };
+      
+      // Handle voice loading for mobile devices
+      if (window.speechSynthesis.getVoices().length === 0) {
+        // Wait for voices to load
+        const handleVoicesChanged = () => {
+          speak();
+          window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+        };
+        window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+        
+        // Fallback timeout
+        setTimeout(() => {
+          window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+          speak();
+        }, 1000);
+      } else {
+        speak();
+      }
     }
   };
 
