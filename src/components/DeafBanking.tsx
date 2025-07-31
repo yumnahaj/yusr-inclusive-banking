@@ -174,7 +174,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                 <CardContent className="p-4 sm:p-6 md:p-8">
                   <Button
                     onClick={() => handleOptionClick(option.action)}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px]"
+                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[100px] sm:min-h-[120px]"
                     aria-label={option.title}
                   >
                     <div className="flex items-center gap-3 w-full">
