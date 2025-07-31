@@ -37,10 +37,9 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
         />
         
        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 sm:mb-6 font-bold leading-tight" id="page-title">
-        <span className="block text-inherit font-inherit leading-inherit">
-         {t('main.welcome')} <span className="inline text-inherit font-inherit leading-inherit">يُسر</span>
-        </span>
+           {t('main.welcome')}
        </h1>
+
 
 
         <p className="text-white/80 text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-14 px-2" role="doc-subtitle">
