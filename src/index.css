@@ -72,25 +72,27 @@
   .high-contrast {
     --background: 0 0% 0% !important;
     --foreground: 0 0% 100% !important;
-    --card: 0 0% 5% !important;
+    --card: 0 0% 0% !important;
     --card-foreground: 0 0% 100% !important;
     --primary: 0 0% 100% !important;
     --primary-foreground: 0 0% 0% !important;
-    --secondary: 0 0% 15% !important;
-    --secondary-foreground: 0 0% 100% !important;
-    --muted: 0 0% 10% !important;
-    --muted-foreground: 0 0% 90% !important;
-    --accent: 60 100% 50% !important;
+    --secondary: 0 0% 100% !important;
+    --secondary-foreground: 0 0% 0% !important;
+    --muted: 0 0% 0% !important;
+    --muted-foreground: 0 0% 100% !important;
+    --accent: 0 0% 100% !important;
     --accent-foreground: 0 0% 0% !important;
-    --border: 0 0% 80% !important;
-    --input: 0 0% 10% !important;
-    --ring: 60 100% 50% !important;
-    --destructive: 0 100% 60% !important;
+    --border: 0 0% 100% !important;
+    --input: 0 0% 0% !important;
+    --ring: 0 0% 100% !important;
+    --destructive: 0 100% 50% !important;
     --destructive-foreground: 0 0% 100% !important;
-    --emergency: 0 100% 60% !important;
+    --emergency: 0 100% 50% !important;
     --emergency-foreground: 0 0% 100% !important;
     --success: 120 100% 50% !important;
     --success-foreground: 0 0% 0% !important;
+    --popover: 0 0% 0% !important;
+    --popover-foreground: 0 0% 100% !important;
   }
 }
 
@@ -145,20 +147,46 @@
     .high-contrast {
       --background: 0 0% 0% !important;
       --foreground: 0 0% 100% !important;
-      --card: 0 0% 5% !important;
+      --card: 0 0% 0% !important;
       --card-foreground: 0 0% 100% !important;
       --primary: 0 0% 100% !important;
       --primary-foreground: 0 0% 0% !important;
-      --secondary: 0 0% 15% !important;
-      --secondary-foreground: 0 0% 100% !important;
-      --muted: 0 0% 10% !important;
-      --muted-foreground: 0 0% 85% !important;
-      --accent: 60 100% 50% !important;
+      --secondary: 0 0% 100% !important;
+      --secondary-foreground: 0 0% 0% !important;
+      --muted: 0 0% 0% !important;
+      --muted-foreground: 0 0% 100% !important;
+      --accent: 0 0% 100% !important;
       --accent-foreground: 0 0% 0% !important;
-      --border: 0 0% 80% !important;
-      --input: 0 0% 15% !important;
-      --ring: 60 100% 50% !important;
+      --border: 0 0% 100% !important;
+      --input: 0 0% 0% !important;
+      --ring: 0 0% 100% !important;
     }
+  }
+
+  /* High contrast text specifically */
+  .high-contrast * {
+    color: white !important;
+    background-color: black !important;
+    border-color: white !important;
+  }
+
+  .high-contrast .bg-primary,
+  .high-contrast .bg-secondary,
+  .high-contrast .bg-accent {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .high-contrast button {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+  }
+
+  .high-contrast button:hover {
+    background-color: black !important;
+    color: white !important;
+    border: 2px solid white !important;
   }
 
   /* WCAG 2.1 - Reduced motion for animations */
