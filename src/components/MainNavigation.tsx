@@ -56,9 +56,10 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                    role="menuitem"
                    tabIndex={0}
                  >
-                   <div className="flex items-center justify-center w-full">
-                     <div className="text-center">
-                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">البنك التقليدي</h3>
+                   <div className="flex items-center gap-4 sm:gap-6 w-full">
+                     <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
+                     <div className="text-right flex-1 min-w-0">
+                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">البنك التقليدي</h3>
                        <p className="text-white/70 text-lg sm:text-xl leading-tight">الخدمات البنكية العادية</p>
                      </div>
                    </div>
@@ -81,9 +82,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                   tabIndex={0}
                 >
                   <div className="flex items-center gap-4 sm:gap-6 w-full">
-                    <div className="bg-white/20 p-4 sm:p-6 rounded-full flex-shrink-0">
-                      <Accessibility className="w-8 h-8 sm:w-12 sm:h-12" />
-                    </div>
+                    <Accessibility className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
                     <div className="text-right flex-1 min-w-0">
                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">ذوي الهمم</h3>
                       <p className="text-white/70 text-lg sm:text-xl leading-tight">خدمات متخصصة وسهلة الوصول</p>
