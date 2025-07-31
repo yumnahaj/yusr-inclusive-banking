@@ -71,9 +71,8 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
     }
   };
 
-  if (!isVisible) 
-
- 
+  if (!isVisible) {
+    return null;}
           
        
       
