@@ -74,7 +74,7 @@ const AccessibilityNavigation = ({
           
           <div className="flex items-center gap-3 sm:gap-4">
             <img 
-              src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" 
+              src="/lovable-uploads/0be8718c-b956-4dcc-89a2-2b848343e3b4.png" 
               alt="شعار تطبيق يُسر البنكي" 
               className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16"
               role="img"
