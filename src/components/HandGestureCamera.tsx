@@ -1,4 +1,4 @@
-ايش اعدل هنا import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Camera, CameraOff, Hand, RotateCcw, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import { useOptimizedHandGestureRecognition, GestureType } from "@/hooks/useOpti
 import FallbackGestureInterface from "./FallbackGestureInterface";
 import GestureErrorBoundary from "./GestureErrorBoundary";
 import { useState } from "react";
-import { useEffect } from 'react';
+import { useEffect } from 'react';https://github.com/yumnahaj/yusr-inclusive-banking/edit/main/src/components/HandGestureCamera.tsx
 
 interface HandGestureCameraProps {
   onGestureDetected: (gesture: GestureType) => void;
