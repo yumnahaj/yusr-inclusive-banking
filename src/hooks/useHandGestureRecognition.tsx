@@ -44,50 +44,73 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
     const pinky_pip = hand[18];
     const wrist = hand[0];
 
-    // حساب الأصابع المرفوعة مع تحسين للجوال
+    // حساب الأصابع المرفوعة مع تحسين أكبر للجوال
+    const mobileThreshold = isMobile ? 0.015 : 0.03; // عتبة أقل للجوال
+    const mobileVerticalThreshold = isMobile ? 0.03 : 0.05; // عتبة أقل للارتفاع
+    
+    // حساب الإبهام مع مراعاة الكاميرا الأمامية والخلفية
     const thumb_ratio = facingMode === 'user' ? 
       (thumb_tip.x - thumb_mcp.x) : (thumb_mcp.x - thumb_tip.x);
-    const isThumbUp = thumb_ratio > 0.02;
+    const isThumbUp = Math.abs(thumb_ratio) > mobileThreshold;
     
-    const isIndexUp = (index_mcp.y - index_tip.y) > 0.05;
-    const isMiddleUp = (middle_pip.y - middle_tip.y) > 0.05;
-    const isRingUp = (ring_pip.y - ring_tip.y) > 0.05;
-    const isPinkyUp = (pinky_pip.y - pinky_tip.y) > 0.05;
+    // حساب الأصابع الأخرى بعتبة أقل للجوال
+    const isIndexUp = (index_mcp.y - index_tip.y) > mobileVerticalThreshold;
+    const isMiddleUp = (middle_pip.y - middle_tip.y) > mobileVerticalThreshold;
+    const isRingUp = (ring_pip.y - ring_tip.y) > mobileVerticalThreshold;
+    const isPinkyUp = (pinky_pip.y - pinky_tip.y) > mobileVerticalThreshold;
 
     const fingersUp = [isThumbUp, isIndexUp, isMiddleUp, isRingUp, isPinkyUp].filter(Boolean).length;
 
-    console.log('📱 Mobile Gesture Analysis:', {
+    // إضافة معلومات تشخيصية مفصلة
+    const debugInfo = {
+      device: isMobile ? 'Mobile' : 'Desktop',
+      facingMode,
       fingersUp,
-      thumbRatio: thumb_ratio,
-      isThumbUp,
-      isIndexUp,
-      isMiddleUp,
-      isRingUp,
-      isPinkyUp,
-      facingMode
-    });
+      thumbRatio: thumb_ratio.toFixed(3),
+      fingers: {
+        thumb: isThumbUp,
+        index: isIndexUp,
+        middle: isMiddleUp,
+        ring: isRingUp,
+        pinky: isPinkyUp
+      },
+      thresholds: {
+        mobile: mobileThreshold,
+        vertical: mobileVerticalThreshold
+      }
+    };
 
-    // تحليل الإيماءات مبسط للجوال
-    if (fingersUp >= 4) {
-      console.log('✋ Detected: open_hand');
+    console.log('🔍 Detailed Gesture Analysis:', debugInfo);
+
+    // تحليل الإيماءات مع شروط أكثر تساهلاً للجوال
+    if (fingersUp >= 4 || (isMobile && fingersUp >= 3 && isIndexUp && isMiddleUp)) {
+      console.log('✋ Detected: open_hand (fingers:', fingersUp, ')');
       return 'open_hand';
-    } else if (fingersUp === 0) {
-      console.log('👊 Detected: closed_fist');
+    } 
+    
+    if (fingersUp === 0 || (isMobile && fingersUp <= 1 && !isIndexUp)) {
+      console.log('👊 Detected: closed_fist (fingers:', fingersUp, ')');
       return 'closed_fist';
-    } else if (isIndexUp && fingersUp === 1) {
-      console.log('👉 Detected: pointing_right');
+    } 
+    
+    if (isIndexUp && !isMiddleUp && !isRingUp && !isPinkyUp) {
+      console.log('👉 Detected: pointing_right (index only)');
       return 'pointing_right';
-    } else if (fingersUp === 3 && !isThumbUp && !isPinkyUp) {
-      console.log('🤚 Detected: raised_hand');
+    }
+    
+    if ((fingersUp === 3 && isIndexUp && isMiddleUp && isRingUp) || 
+        (isMobile && fingersUp >= 2 && isIndexUp && isMiddleUp)) {
+      console.log('🤚 Detected: raised_hand (3 fingers up)');
       return 'raised_hand';
-    } else if (isThumbUp && isIndexUp && fingersUp === 2) {
-      // OK gesture مبسط للجوال
+    }
+    
+    if (isThumbUp && isIndexUp && fingersUp === 2) {
       const distance = Math.sqrt(
         Math.pow(thumb_tip.x - index_tip.x, 2) + 
         Math.pow(thumb_tip.y - index_tip.y, 2)
       );
-      console.log('👌 OK distance:', distance);
-      if (distance < 0.1) {
+      console.log('👌 OK gesture check - distance:', distance.toFixed(3));
+      if (distance < (isMobile ? 0.12 : 0.08)) { // عتبة أكبر للجوال
         console.log('👌 Detected: ok_gesture');
         return 'ok_gesture';
       }
@@ -95,6 +118,10 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
 
     return 'none';
   };
+
+  // نظام تأخير الإيماءة لمنع التكرار
+  const lastGestureTime = useRef<number>(0);
+  const gestureDebounce = 2000; // 2 ثانية بين الإيماءات
 
   const onResults = (results: Results) => {
     if (!canvasRef.current) return;
@@ -109,45 +136,67 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
       const gesture = analyzeGesture(results.multiHandLandmarks);
       
-      // نظام استقرار الإيماءة
-      if (gesture === gestureCountRef.current.gesture) {
-        gestureCountRef.current.count++;
-      } else {
-        gestureCountRef.current = { gesture, count: 1 };
-      }
-
-      // نظام استقرار مبسط للجوال - فقط إطارين
-      const requiredFrames = isMobile ? 2 : 3;
-      if (gestureCountRef.current.count >= requiredFrames && gesture !== currentGesture && gesture !== 'none') {
-        console.log('🎯 Stable gesture detected:', gesture);
-        setCurrentGesture(gesture);
-        onGestureDetected(gesture);
-        gestureCountRef.current = { gesture: 'none', count: 0 };
+      // تحديث الحالة الحالية
+      setCurrentGesture(gesture);
+      
+      // إرسال الإيماءة فوراً مع debouncing
+      const now = Date.now();
+      if (gesture !== 'none' && gesture !== currentGesture && 
+          (now - lastGestureTime.current) > gestureDebounce) {
         
-        // تأخير قصير لتجنب التفعيل المتكرر
-        setTimeout(() => {
-          gestureCountRef.current = { gesture: 'none', count: 0 };
-        }, 1000);
-      } else if (gesture === 'none') {
-        setCurrentGesture('none');
-        gestureCountRef.current = { gesture: 'none', count: 0 };
+        console.log('🎯 Gesture detected immediately:', gesture);
+        lastGestureTime.current = now;
+        onGestureDetected(gesture);
+        
+        // اهتزاز للتأكيد على الجوال
+        if ('vibrate' in navigator && isMobile) {
+          navigator.vibrate([100, 50, 100]);
+        }
       }
 
-      // رسم النقاط على اللوحة (اختياري للتصحيح)
-      ctx.fillStyle = '#ff0000';
-      results.multiHandLandmarks.forEach((landmarks) => {
-        landmarks.forEach((landmark) => {
+      // رسم النقاط على اللوحة للتصحيح
+      if (gesture !== 'none') {
+        ctx.fillStyle = '#00ff00';
+        ctx.strokeStyle = '#ff0000';
+        ctx.lineWidth = 2;
+        
+        results.multiHandLandmarks.forEach((landmarks) => {
+          // رسم النقاط
+          landmarks.forEach((landmark, index) => {
+            ctx.beginPath();
+            ctx.arc(
+              landmark.x * canvas.width,
+              landmark.y * canvas.height,
+              index === 8 || index === 4 ? 5 : 3, // نقاط أكبر للإبهام والسبابة
+              0,
+              2 * Math.PI
+            );
+            ctx.fill();
+          });
+          
+          // رسم خطوط اليد
+          const connections = [
+            [0, 1], [1, 2], [2, 3], [3, 4], // الإبهام
+            [0, 5], [5, 6], [6, 7], [7, 8], // السبابة
+            [0, 9], [9, 10], [10, 11], [11, 12], // الوسطى
+            [0, 13], [13, 14], [14, 15], [15, 16], // البنصر
+            [0, 17], [17, 18], [18, 19], [19, 20] // الخنصر
+          ];
+          
           ctx.beginPath();
-          ctx.arc(
-            landmark.x * canvas.width,
-            landmark.y * canvas.height,
-            3,
-            0,
-            2 * Math.PI
-          );
-          ctx.fill();
+          connections.forEach(([start, end]) => {
+            ctx.moveTo(
+              landmarks[start].x * canvas.width,
+              landmarks[start].y * canvas.height
+            );
+            ctx.lineTo(
+              landmarks[end].x * canvas.width,
+              landmarks[end].y * canvas.height
+            );
+          });
+          ctx.stroke();
         });
-      });
+      }
     } else {
       setCurrentGesture('none');
     }

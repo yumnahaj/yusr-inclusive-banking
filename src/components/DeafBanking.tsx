@@ -89,31 +89,49 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
     }, 3000);
   };
 
+  const [gestureProcessing, setGestureProcessing] = useState(false);
+  const [detectedGestureAction, setDetectedGestureAction] = useState("");
+
   // تحويل الإيماءة إلى إجراء
   const handleGestureDetected = (gesture: GestureType) => {
     let action = "";
+    let actionName = "";
     
     switch (gesture) {
       case 'open_hand':
         action = "balance";
+        actionName = "رصيدي الحالي";
         break;
       case 'closed_fist':
         action = "statement";
+        actionName = "كشف الحساب";
         break;
       case 'pointing_right':
         action = "transfer";
+        actionName = "تحويل أموال";
         break;
       case 'raised_hand':
       case 'ok_gesture':
         action = "help";
+        actionName = "مساعدة فورية";
         break;
       default:
         return;
     }
 
-    // إغلاق الكاميرا وتنفيذ الإجراء
-    setShowHandGestureCamera(false);
-    handleOptionClick(action);
+    console.log('🎯 Gesture action detected:', action, actionName);
+    
+    // إظهار رسالة التأكيد
+    setGestureProcessing(true);
+    setDetectedGestureAction(actionName);
+    
+    // تأخير قبل تنفيذ الإجراء وإغلاق الكاميرا
+    setTimeout(() => {
+      setShowHandGestureCamera(false);
+      setGestureProcessing(false);
+      setDetectedGestureAction("");
+      handleOptionClick(action);
+    }, 2000); // تأخير لثانيتين للسماح للمستخدم برؤية التأكيد
   };
 
   return (
@@ -162,6 +180,25 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           isVisible={showHandGestureCamera}
           onClose={() => setShowHandGestureCamera(false)}
         />
+
+        {/* رسالة تأكيد الإيماءة */}
+        {gestureProcessing && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+          >
+            <Card className="bg-green-500 text-white border-green-400 shadow-2xl">
+              <CardContent className="p-6 text-center">
+                <div className="text-4xl mb-2">✅</div>
+                <h3 className="text-xl font-bold mb-2">تم اكتشاف الإيماءة!</h3>
+                <p className="text-lg">{detectedGestureAction}</p>
+                <p className="text-sm mt-2 opacity-90">جاري التنفيذ...</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Sign Language Video Area */}
         {showSignLanguageVideo && (
