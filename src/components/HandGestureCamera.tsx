@@ -199,29 +199,8 @@ if (!isVisible) return null;
 
  
           
-          {/* زر التبديل للوضع التفاعلي */}
-          {!capabilities.supportsMediaPipe && (
-            <div className="text-center mb-4">
-              <Button
-                onClick={() => setShowFallback(true)}
-                variant="secondary"
-                className="flex items-center gap-2"
-              >
-                <Smartphone className="w-5 h-5" />
-                استخدام الوضع التفاعلي
-              </Button>
-            </div>
-          )}
-
-          {/* معلومات الجهاز للتشخيص */}
-          {capabilities && (
-            <div className="text-xs text-gray-500 text-center mb-4">
-              {capabilities.isMobile ? '📱 جوال' : '💻 كمبيوتر'} | 
-              أداء: {capabilities.performanceLevel === 'low' ? 'منخفض' : 
-                     capabilities.performanceLevel === 'medium' ? 'متوسط' : 'عالي'} | 
-              {capabilities.supportsMediaPipe ? '✅ مدعوم' : '❌ غير مدعوم'}
-            </div>
-          )}
+       
+      
 
           {/* دليل الإيماءات */}
           <div className="bg-gray-50 rounded-lg p-4">
