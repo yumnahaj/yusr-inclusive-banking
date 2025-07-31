@@ -233,7 +233,7 @@ const BlindBanking = ({
           
           <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4">
             <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-20 sm:h-20" />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر</h1>
           </div>
           
         </div>
