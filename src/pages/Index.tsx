@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SplashScreen from "@/components/SplashScreen";
 import MainNavigation from "@/components/MainNavigation";
 import TraditionalBanking from "@/components/TraditionalBanking";
@@ -9,6 +9,7 @@ import MobilityBanking from "@/components/MobilityBanking";
 import EmergencyButton from "@/components/EmergencyButton";
 import VoiceVerification from "@/components/VoiceVerification";
 import FaceVerification from "@/components/FaceVerification";
+import SkipLinks from "@/components/SkipLinks";
 
 type AppState = 
   | "splash" 
@@ -25,6 +26,37 @@ type AppState =
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>("splash");
+
+  // WCAG 2.1 - Set page title for screen readers
+  useEffect(() => {
+    const pageTitles = {
+      splash: "يُسر - تطبيق البنك الرقمي",
+      main: "يُسر - الصفحة الرئيسية",
+      traditional: "يُسر - البنك التقليدي",
+      accessibility: "يُسر - واجهة ذوي الهمم",
+      "voice-verification": "يُسر - التحقق الصوتي",
+      blind: "يُسر - واجهة المكفوفين",
+      deaf: "يُسر - واجهة الصم والبكم",
+      mobility: "يُسر - واجهة ذوي الإعاقة الحركية",
+      "face-verification-traditional": "يُسر - التحقق بالوجه",
+      "face-verification-deaf": "يُسر - التحقق بالوجه",
+      "face-verification-mobility": "يُسر - التحقق بالوجه",
+    };
+    
+    document.title = pageTitles[appState] || "يُسر - تطبيق البنك الرقمي";
+    
+    // WCAG 2.1 - Announce page changes to screen readers
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = `تم تحميل صفحة ${pageTitles[appState]}`;
+    document.body.appendChild(announcement);
+    
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  }, [appState]);
 
   const renderCurrentScreen = () => {
     switch (appState) {
@@ -103,8 +135,23 @@ const Index = () => {
 
   return (
     <>
-      {renderCurrentScreen()}
-      {appState !== "splash" && <EmergencyButton />}
+      {/* WCAG 2.1 - Skip links for keyboard navigation */}
+      <SkipLinks />
+      
+      {/* WCAG 2.1 - Main landmark */}
+      <main id="main-content" role="main">
+        {renderCurrentScreen()}
+      </main>
+      
+      {/* WCAG 2.1 - Emergency button with proper accessibility */}
+      {appState !== "splash" && (
+        <aside aria-label="أزرار الطوارئ">
+          <EmergencyButton />
+        </aside>
+      )}
+      
+      {/* WCAG 2.1 - Screen reader announcements */}
+      <div id="announcements" aria-live="polite" aria-atomic="true" className="sr-only"></div>
     </>
   );
 };

@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import AccessibilityControls from "./AccessibilityControls";
 
 const EmergencyButton = () => {
   const { toast } = useToast();
+  const [showAccessibilityControls, setShowAccessibilityControls] = useState(false);
 
   const handleEmergencyClick = () => {
     // Simulate emergency call functionality
@@ -20,14 +23,43 @@ const EmergencyButton = () => {
   };
 
   return (
-    <Button
-      onClick={handleEmergencyClick}
-      className="btn-emergency"
-      aria-label="استغاثة سريعة - يُسر معك"
-      title="اضغط للطوارئ - يُسر معك"
-    >
-      <Phone className="w-6 h-6" />
-    </Button>
+    <>
+      {/* WCAG 2.1 - Emergency button with enhanced accessibility */}
+      <Button
+        onClick={handleEmergencyClick}
+        className="btn-emergency"
+        aria-label="استغاثة سريعة - يُسر معك - الضغط للاتصال بالطوارئ"
+        title="اضغط للطوارئ - يُسر معك"
+        role="button"
+        tabIndex={0}
+        // WCAG 2.1 - Keyboard support
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleEmergencyClick();
+          }
+        }}
+      >
+        <Phone className="w-6 h-6" aria-hidden="true" />
+      </Button>
+
+      {/* WCAG 2.1 - Accessibility controls toggle */}
+      <Button
+        className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-accent hover:bg-accent/80 text-accent-foreground btn-accessible"
+        onClick={() => setShowAccessibilityControls(!showAccessibilityControls)}
+        aria-label={showAccessibilityControls ? "إخفاء إعدادات الوصولية" : "إظهار إعدادات الوصولية"}
+        title="إعدادات الوصولية - WCAG 2.1"
+        role="button"
+        tabIndex={0}
+      >
+        <span className="text-lg" aria-hidden="true">♿</span>
+      </Button>
+
+      {/* WCAG 2.1 - Accessibility controls panel */}
+      {showAccessibilityControls && (
+        <AccessibilityControls onClose={() => setShowAccessibilityControls(false)} />
+      )}
+    </>
   );
 };
 
