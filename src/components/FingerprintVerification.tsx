@@ -1,18 +1,18 @@
 import { motion } from "framer-motion";
-import { Mic, MicOff, Shield, CheckCircle, XCircle } from "lucide-react";
+import { Fingerprint, Shield, CheckCircle, XCircle, Scan } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 
-interface VoiceVerificationProps {
+interface FingerprintVerificationProps {
   onVerified: () => void;
   onBack: () => void;
 }
 
-const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
-  const [isRecording, setIsRecording] = useState(false);
-  const [verificationStep, setVerificationStep] = useState<'intro' | 'recording' | 'processing' | 'success' | 'failed'>('intro');
-  const [audioLevel, setAudioLevel] = useState(0);
+const FingerprintVerification = ({ onVerified, onBack }: FingerprintVerificationProps) => {
+  const [isScanning, setIsScanning] = useState(false);
+  const [verificationStep, setVerificationStep] = useState<'intro' | 'scanning' | 'processing' | 'success' | 'failed'>('intro');
+  const [scanProgress, setScanProgress] = useState(0);
 
   const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -24,60 +24,69 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
   };
 
   useEffect(() => {
-    speakText("مرحباً بك في نظام التحقق من بصمة الصوت. سنحتاج منك قول عبارة معينة للتحقق من هويتك");
+    speakText("مرحباً بك في نظام التحقق من بصمة الإصبع. ضع إصبعك على المستشعر للتحقق من هويتك");
   }, []);
 
-  const startRecording = async () => {
+  const startScanning = async () => {
     try {
-      setIsRecording(true);
-      setVerificationStep('recording');
-      speakText("قل العبارة التالية: مرحباً، أنا أريد الدخول إلى حسابي البنكي في تطبيق يُسر");
+      setIsScanning(true);
+      setVerificationStep('scanning');
+      speakText("ضع إصبعك على المستشعر واضغط بلطف");
       
-      // Simulate recording and verification process
-      setTimeout(() => {
-        setVerificationStep('processing');
-        speakText("جاري معالجة بصمة الصوت...");
-      }, 3000);
+      // Simulate fingerprint scanning progress
+      const scanningInterval = setInterval(() => {
+        setScanProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(scanningInterval);
+            setVerificationStep('processing');
+            speakText("جاري معالجة بصمة الإصبع...");
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 200);
 
       setTimeout(() => {
         setVerificationStep('success');
-        speakText("تم التحقق من بصمة الصوت بنجاح. مرحباً بك");
-      }, 5000);
+        speakText("تم التحقق من بصمة الإصبع بنجاح. مرحباً بك");
+        setScanProgress(0);
+      }, 3500);
 
       setTimeout(() => {
         onVerified();
-      }, 7000);
+      }, 5500);
 
     } catch (error) {
-      console.error('Error accessing microphone:', error);
+      console.error('Error accessing fingerprint sensor:', error);
       setVerificationStep('failed');
-      speakText("حدث خطأ في الوصول للمايكروفون. تأكد من السماح للتطبيق باستخدام المايكروفون");
+      speakText("حدث خطأ في قراءة بصمة الإصبع. تأكد من وضع إصبعك بشكل صحيح على المستشعر");
+      setScanProgress(0);
     }
   };
 
   const getStatusIcon = () => {
     switch (verificationStep) {
-      case 'recording':
-        return <Mic className="w-16 h-16 text-primary animate-pulse" />;
+      case 'scanning':
+        return <Fingerprint className="w-16 h-16 text-primary animate-pulse" />;
       case 'processing':
-        return <Shield className="w-16 h-16 text-yellow-500 animate-spin" />;
+        return <Shield className="w-16 h-16 text-accent animate-spin" />;
       case 'success':
-        return <CheckCircle className="w-16 h-16 text-green-500" />;
+        return <CheckCircle className="w-16 h-16 text-success" />;
       case 'failed':
-        return <XCircle className="w-16 h-16 text-red-500" />;
+        return <XCircle className="w-16 h-16 text-destructive" />;
       default:
-        return <MicOff className="w-16 h-16 text-muted-foreground" />;
+        return <Scan className="w-16 h-16 text-muted-foreground" />;
     }
   };
 
   const getStatusText = () => {
     switch (verificationStep) {
       case 'intro':
-        return "اضغط على زر البدء للتحقق من بصمة الصوت";
-      case 'recording':
-        return "قل العبارة المطلوبة بوضوح...";
+        return "اضغط على زر البدء للتحقق من بصمة الإصبع";
+      case 'scanning':
+        return "ضع إصبعك على المستشعر...";
       case 'processing':
-        return "جاري التحقق من بصمة الصوت...";
+        return "جاري التحقق من بصمة الإصبع...";
       case 'success':
         return "تم التحقق بنجاح! جاري توجيهك...";
       case 'failed':
@@ -99,12 +108,12 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
           <CardContent className="space-y-8">
             <div className="flex items-center justify-center mb-6">
               <img src="/lovable-uploads/6fba5ecd-28ee-4ef2-a788-da02b0dd1cf1.png" alt="يُسر" className="w-16 h-16" />
-              <h1 className="text-2xl font-bold text-primary mr-4">التحقق من بصمة الصوت</h1>
+              <h1 className="text-2xl font-bold text-primary mr-4">التحقق من بصمة الإصبع</h1>
             </div>
 
             <motion.div
-              animate={{ scale: verificationStep === 'recording' ? [1, 1.1, 1] : 1 }}
-              transition={{ duration: 1, repeat: verificationStep === 'recording' ? Infinity : 0 }}
+              animate={{ scale: verificationStep === 'scanning' ? [1, 1.1, 1] : 1 }}
+              transition={{ duration: 1, repeat: verificationStep === 'scanning' ? Infinity : 0 }}
               className="flex justify-center"
             >
               {getStatusIcon()}
@@ -115,14 +124,20 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
               
               {verificationStep === 'intro' && (
                 <p className="text-muted-foreground">
-                  سنحتاج منك قول عبارة معينة للتحقق من هويتك الصوتية
+                  ضع إصبعك على مستشعر البصمة للتحقق من هويتك بشكل آمن
                 </p>
               )}
               
-              {verificationStep === 'recording' && (
+              {verificationStep === 'scanning' && (
                 <div className="bg-primary/10 rounded-lg p-4">
-                  <p className="font-bold text-primary mb-2">قل العبارة التالية:</p>
-                  <p className="text-lg">"مرحباً، أنا أريد الدخول إلى حسابي البنكي في تطبيق يُسر"</p>
+                  <p className="font-bold text-primary mb-2">جاري مسح بصمة الإصبع...</p>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div 
+                      className="bg-primary h-2 rounded-full transition-all duration-200" 
+                      style={{ width: `${scanProgress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-2">{scanProgress}% مكتمل</p>
                 </div>
               )}
             </div>
@@ -131,12 +146,12 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
               {verificationStep === 'intro' && (
                 <>
                   <Button
-                    onClick={startRecording}
+                    onClick={startScanning}
                     size="lg"
                     className="flex items-center gap-2"
                   >
-                    <Mic className="w-5 h-5" />
-                    بدء التحقق
+                    <Fingerprint className="w-5 h-5" />
+                    بدء المسح
                   </Button>
                   <Button
                     onClick={onBack}
@@ -153,7 +168,8 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
                   <Button
                     onClick={() => {
                       setVerificationStep('intro');
-                      setIsRecording(false);
+                      setIsScanning(false);
+                      setScanProgress(0);
                     }}
                     size="lg"
                   >
@@ -176,4 +192,4 @@ const VoiceVerification = ({ onVerified, onBack }: VoiceVerificationProps) => {
   );
 };
 
-export default VoiceVerification;
+export default FingerprintVerification;

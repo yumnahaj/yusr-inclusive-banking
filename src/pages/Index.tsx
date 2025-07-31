@@ -7,7 +7,7 @@ import BlindBanking from "@/components/BlindBanking";
 import DeafBanking from "@/components/DeafBanking";
 import MobilityBanking from "@/components/MobilityBanking";
 import EmergencyButton from "@/components/EmergencyButton";
-import VoiceVerification from "@/components/VoiceVerification";
+import FingerprintVerification from "@/components/FingerprintVerification";
 import FaceVerification from "@/components/FaceVerification";
 import SkipLinks from "@/components/SkipLinks";
 
@@ -16,7 +16,7 @@ type AppState =
   | "main" 
   | "traditional" 
   | "accessibility"
-  | "voice-verification"
+  | "fingerprint-verification"
   | "blind"
   | "deaf" 
   | "mobility"
@@ -34,7 +34,7 @@ const Index = () => {
       main: "يُسر - الصفحة الرئيسية",
       traditional: "يُسر - البنك التقليدي",
       accessibility: "يُسر - واجهة ذوي الهمم",
-      "voice-verification": "يُسر - التحقق الصوتي",
+      "fingerprint-verification": "يُسر - التحقق من بصمة الإصبع",
       blind: "يُسر - واجهة المكفوفين",
       deaf: "يُسر - واجهة الصم والبكم",
       mobility: "يُسر - واجهة ذوي الإعاقة الحركية",
@@ -105,15 +105,15 @@ const Index = () => {
         return (
           <AccessibilityNavigation
             onBack={() => setAppState("main")}
-            onSelectBlind={() => setAppState("voice-verification")}
+            onSelectBlind={() => setAppState("fingerprint-verification")}
             onSelectDeaf={() => setAppState("face-verification-deaf")}
             onSelectMobility={() => setAppState("face-verification-mobility")}
           />
         );
 
-      case "voice-verification":
+      case "fingerprint-verification":
         return (
-          <VoiceVerification
+          <FingerprintVerification
             onVerified={() => setAppState("blind")}
             onBack={() => setAppState("accessibility")}
           />
