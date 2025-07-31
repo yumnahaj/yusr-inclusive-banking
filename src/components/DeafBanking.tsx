@@ -8,7 +8,8 @@ import BalanceView from "./BalanceView";
 import StatementView from "./StatementView";
 import TransferView from "./TransferView";
 import HandGestureCamera from "./HandGestureCamera";
-import { GestureType } from "@/hooks/useHandGestureRecognition";
+import { GestureType } from "@/hooks/useOptimizedHandGestureRecognition";
+import { performanceMonitor } from "@/utils/performanceMonitor";
 
 interface DeafBankingProps {
   onBack: () => void;
@@ -93,6 +94,10 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
 
   // تحويل الإيماءة إلى إجراء
   const handleGestureDetected = (gesture: GestureType) => {
+    console.log('Gesture detected in DeafBanking:', gesture);
+    const latency = performanceMonitor.markGestureDetected();
+    console.log(`🚀 Gesture processing time: ${latency}ms`);
+    
     let action = "";
     let actionName = "";
     
