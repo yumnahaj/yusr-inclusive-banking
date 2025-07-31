@@ -131,8 +131,7 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
                   <canvas
                     ref={canvasRef}
                     className={`absolute top-0 left-0 w-full h-full ${facingMode === 'user' ? 'transform scale-x-[-1]' : ''}`}
-                    width={640}
-                    height={480}
+                    
                   />
                   {/* مؤشر نوع الكاميرا */}
                   <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
