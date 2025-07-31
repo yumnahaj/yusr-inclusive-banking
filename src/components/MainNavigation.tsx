@@ -35,14 +35,9 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
           className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto mb-8 sm:mb-10"
           role="img"
         />
-        
-       <h1
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 font-bold leading-tight"
-           id="page-title"
-        >
-           {t('main.welcome')}
+        <h1 className="text-5xl sm:text-5xl md:text-7xl lg:text-7xl text-white mb-4 sm:mb-6 font-bold leading-tight" id="page-title">
+             {t('main.welcome')}
         </h1>
-
 
 
 
