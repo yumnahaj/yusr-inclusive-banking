@@ -8,8 +8,7 @@ import BalanceView from "./BalanceView";
 import StatementView from "./StatementView";
 import TransferView from "./TransferView";
 import HandGestureCamera from "./HandGestureCamera";
-import { GestureType } from "@/hooks/useOptimizedHandGestureRecognition";
-import { performanceMonitor } from "@/utils/performanceMonitor";
+import { GestureType } from "@/hooks/useHandGestureRecognition";
 
 interface DeafBankingProps {
   onBack: () => void;
@@ -94,10 +93,6 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
 
   // تحويل الإيماءة إلى إجراء
   const handleGestureDetected = (gesture: GestureType) => {
-    console.log('Gesture detected in DeafBanking:', gesture);
-    const latency = performanceMonitor.markGestureDetected();
-    console.log(`🚀 Gesture processing time: ${latency}ms`);
-    
     let action = "";
     let actionName = "";
     
@@ -139,7 +134,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   };
 
   return (
-    <div className="flex justify-center mt-4 sm:mt-6 md:mt-8 px-2">
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -163,20 +158,19 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
             <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
-            <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center">يُسر</h1>
+            <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center">يُسر للصم والبكم</h1>
           </div>
 
           {/* زر تفعيل كاميرا الإيماءات */}
           <div className="flex justify-center">
-             <Button
-               onClick={() => setShowHandGestureCamera(true)}
-               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-             >
-                <Hand className="w-5 h-5" />
-                التحكم بإيماءات اليد
-             </Button>
+            <Button
+              onClick={() => setShowHandGestureCamera(true)}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+            >
+              <Hand className="w-5 h-5" />
+              التحكم بإيماءات اليد
+            </Button>
           </div>
-
         </div>
 
         {/* كاميرا الإيماءات */}
