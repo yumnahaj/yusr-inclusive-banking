@@ -180,8 +180,8 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                     <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6 w-full">
                       <div className="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start">
                         <SignLanguageIcon type={option.signIcon as any} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-                        <div className={`bg-gradient-to-br ${option.color} p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center`}>
-                          <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8">{option.icon}</div>
+                        <div className={`bg-gradient-to-br ${option.color} p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16`}>
+                          {option.icon}
                         </div>
                       </div>
                       <div className="text-center sm:text-right flex-1 min-w-0">
