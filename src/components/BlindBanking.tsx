@@ -254,54 +254,54 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         className="max-w-4xl mx-auto"
       >
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-8 gap-3">
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <Button
               onClick={onBack}
               variant="outline"
-              size="sm"
-              className="flex items-center gap-2 text-sm sm:text-xl p-3 sm:p-6 transition-all duration-300 min-h-[48px] sm:min-h-[60px] touch-manipulation btn-accessible"
+              size="lg"
+              className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible"
               aria-label="العودة للصفحة السابقة"
               onFocus={() => speakText("زر العودة")}
             >
-              <ArrowLeft className="w-4 h-4 sm:w-6 sm:h-6" />
+              <ArrowLeft className="w-6 h-6 sm:w-8 sm:h-8" />
               العودة
             </Button>
             
             <Button
               onClick={() => handleSingleClick("high-contrast")}
               variant="outline"
-              size="sm"
-              className="flex items-center gap-2 text-sm sm:text-xl p-3 sm:p-6 transition-all duration-300 min-h-[48px] sm:min-h-[60px] touch-manipulation btn-accessible"
+              size="lg"
+              className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible"
               aria-label="تبديل وضع التباين العالي لضعاف البصر"
               onFocus={() => speakText("زر التباين العالي")}
             >
-              <Palette className="w-4 h-4 sm:w-6 sm:h-6" />
+              <Palette className="w-6 h-6 sm:w-8 sm:h-8" />
               <span className="hidden sm:inline">{highContrast ? 'إيقاف' : 'تفعيل'} التباين العالي</span>
               <span className="sm:hidden">تباين</span>
             </Button>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-3 order-first sm:order-last">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-8 h-8 sm:w-16 sm:h-16" />
-            <h1 className="text-lg sm:text-3xl font-bold text-primary">يُسر للمكفوفين</h1>
+          <div className="flex items-center gap-3 sm:gap-4 order-first sm:order-last">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-20 sm:h-20" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
           </div>
         </div>
 
         {/* Voice Status */}
         {isListening && (
-          <div className="mb-3 sm:mb-6 text-center">
-            <div className="rounded-xl p-2 sm:p-4 bg-primary/20">
-              <p className="font-bold text-sm sm:text-xl text-primary">🎤 أستمع إليك الآن...</p>
+          <div className="mb-6 sm:mb-8 text-center">
+            <div className="rounded-xl p-6 sm:p-8 bg-primary/20">
+              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-primary">🎤 أستمع إليك الآن...</p>
             </div>
           </div>
         )}
         
         {/* Confirmation Status */}
         {awaitingConfirmation && (
-          <div className="mb-3 sm:mb-6 text-center">
-            <div className="rounded-xl p-2 sm:p-4 bg-yellow-100">
-              <p className="font-bold text-sm sm:text-xl text-yellow-800">
+          <div className="mb-6 sm:mb-8 text-center">
+            <div className="rounded-xl p-6 sm:p-8 bg-yellow-100">
+              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-yellow-800">
                 🔄 انتظار التأكيد - اضغط مرة أخرى أو قل "نعم"
               </p>
             </div>
@@ -312,10 +312,10 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         <motion.div
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
-          className="mb-6 sm:mb-12"
+          className="mb-8 sm:mb-12"
         >
           <Card 
-            className="text-center p-3 sm:p-8 border-2 cursor-pointer transition-all duration-300 touch-manipulation border-primary hover:bg-primary/5"
+            className="text-center p-6 sm:p-10 md:p-12 border-2 cursor-pointer transition-all duration-300 touch-manipulation border-primary hover:bg-primary/5"
             onClick={() => handleSingleClick("رصيدي")}
             onDoubleClick={handleDoubleClick}
             role="button"
@@ -323,17 +323,17 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
             aria-label={`رصيدك الحالي ${balance} ريال سعودي - اضغط مرتين للتأكيد`}
             onFocus={() => speakText("رصيدك الحالي")}
           >
-            <CardContent className="p-2 sm:p-6">
-              <h2 className="text-base sm:text-2xl font-bold mb-2 sm:mb-4 text-primary">الرصيد الحالي</h2>
-              <p className="text-2xl sm:text-6xl font-bold text-primary balance-mobile">{balance}</p>
-              <p className="text-sm sm:text-xl mt-1 sm:mt-2 text-muted-foreground">ريال سعودي</p>
+            <CardContent className="p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-primary">الرصيد الحالي</h2>
+              <p className="text-4xl sm:text-6xl lg:text-8xl font-bold text-primary balance-mobile">{balance}</p>
+              <p className="text-lg sm:text-2xl lg:text-3xl mt-3 sm:mt-4 text-muted-foreground">ريال سعودي</p>
             </CardContent>
           </Card>
         </motion.div>
 
         {/* Banking Options */}
-        <div className="space-y-3 sm:space-y-6">
-          <h2 className="text-base sm:text-2xl font-bold text-center mb-4 sm:mb-8 text-primary">الخدمات البنكية</h2>
+        <div className="space-y-6 sm:space-y-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-6 sm:mb-10 text-primary">الخدمات البنكية</h2>
           
           {bankingOptions.map((option, index) => (
             <motion.div
@@ -345,21 +345,21 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               whileTap={{ scale: 0.98 }}
             >
               <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 touch-manipulation hover:border-primary">
-                <CardContent className="p-3 sm:p-8 card-mobile">
+                <CardContent className="p-6 sm:p-8 md:p-10 card-mobile">
                   <Button
                     onClick={() => handleSingleClick(option.title)}
                     onDoubleClick={handleDoubleClick}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-right min-h-[60px] sm:min-h-[100px] text-foreground"
+                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-right min-h-[80px] sm:min-h-[120px] text-foreground"
                     aria-label={`${option.ariaLabel} - اضغط مرتين للتأكيد`}
                     onFocus={() => speakText(option.title)}
                   >
-                    <div className="flex items-center gap-3 sm:gap-6 w-full">
-                      <div className="p-3 sm:p-6 rounded-2xl flex-shrink-0 bg-primary/20 text-primary">
-                        <div className="w-5 h-5 sm:w-8 sm:h-8">{option.icon}</div>
+                    <div className="flex items-center gap-4 sm:gap-6 md:gap-8 w-full">
+                      <div className="p-4 sm:p-6 md:p-8 rounded-2xl flex-shrink-0 bg-primary/20 text-primary">
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16">{option.icon}</div>
                       </div>
                       <div className="text-right flex-1 min-w-0">
-                        <h3 className="text-sm sm:text-2xl font-bold mb-1 sm:mb-2 truncate">{option.title}</h3>
-                        <p className="text-xs sm:text-lg text-muted-foreground leading-tight">{option.description}</p>
+                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 truncate">{option.title}</h3>
+                        <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-tight">{option.description}</p>
                       </div>
                     </div>
                   </Button>
@@ -374,11 +374,11 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-6 sm:mt-12 text-center"
+          className="mt-8 sm:mt-12 text-center"
         >
-          <div className="rounded-xl p-3 sm:p-6 bg-accent/20">
-            <h3 className="font-bold mb-1 sm:mb-2 text-xs sm:text-base text-primary">💡 تعليمات الاستخدام</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-tight">
+          <div className="rounded-xl p-6 sm:p-8 md:p-10 bg-accent/20">
+            <h3 className="font-bold mb-3 sm:mb-4 text-lg sm:text-xl lg:text-2xl text-primary">💡 تعليمات الاستخدام</h3>
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-relaxed">
               اضغط على أي زر للاستماع للمحتوى • اضغط مرتين للتأكيد أو قل "نعم" • استخدم التباين العالي لضعاف البصر
             </p>
           </div>
