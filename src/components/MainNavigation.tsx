@@ -47,50 +47,42 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
               whileTap: {}
             })}
           >
-            <Card className="overflow-hidden border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
-              <CardContent className="p-6 sm:p-8 md:p-10">
-                 <div
-                   onClick={onSelectBanking}
-                   className="w-full h-auto p-0 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
-                   aria-label="الدخول للبنك التقليدي - الخدمات البنكية العادية"
-                   role="menuitem"
-                   tabIndex={0}
-                 >
-                   <div className="flex items-center gap-4 sm:gap-6 w-full">
-                     <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
-                     <div className="text-right flex-1 min-w-0">
-                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">البنك التقليدي</h3>
-                       <p className="text-white/70 text-lg sm:text-xl leading-tight">الخدمات البنكية العادية</p>
-                     </div>
-                   </div>
-                 </div>
-              </CardContent>
-            </Card>
+            <div
+              onClick={onSelectBanking}
+              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
+              aria-label="الدخول للبنك التقليدي - الخدمات البنكية العادية"
+              role="menuitem"
+              tabIndex={0}
+            >
+              <div className="flex items-center gap-4 sm:gap-6 w-full">
+                <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
+                <div className="text-right flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">البنك التقليدي</h3>
+                  <p className="text-white/70 text-lg sm:text-xl leading-tight">الخدمات البنكية العادية</p>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Card className="overflow-hidden border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
-              <CardContent className="p-6 sm:p-8 md:p-10">
-                <div
-                  onClick={onSelectAccessibility}
-                  className="w-full h-auto p-0 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
-                  aria-label="الدخول لواجهة ذوي الهمم - خدمات متخصصة وسهلة الوصول"
-                  role="menuitem"
-                  tabIndex={0}
-                >
-                  <div className="flex items-center gap-4 sm:gap-6 w-full">
-                    <Accessibility className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
-                    <div className="text-right flex-1 min-w-0">
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">ذوي الهمم</h3>
-                      <p className="text-white/70 text-lg sm:text-xl leading-tight">خدمات متخصصة وسهلة الوصول</p>
-                    </div>
-                  </div>
+            <div
+              onClick={onSelectAccessibility}
+              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
+              aria-label="الدخول لواجهة ذوي الهمم - خدمات متخصصة وسهلة الوصول"
+              role="menuitem"
+              tabIndex={0}
+            >
+              <div className="flex items-center gap-4 sm:gap-6 w-full">
+                <Accessibility className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
+                <div className="text-right flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">ذوي الهمم</h3>
+                  <p className="text-white/70 text-lg sm:text-xl leading-tight">خدمات متخصصة وسهلة الوصول</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
