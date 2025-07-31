@@ -129,7 +129,7 @@ const TraditionalBanking = ({ onBack }: TraditionalBankingProps) => {
                     {cloneElement(service.icon, { className: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })}
                   </div>
                   <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2 text-foreground leading-tight">{service.title}</h3>
-                  <p className="text-muted-foreground text-xs sm:text-sm leading-tight">{service.description}</p>
+                  
                 </CardContent>
               </Card>
             </motion.div>
