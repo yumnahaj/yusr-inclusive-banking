@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Building2, Heart, Shield } from "lucide-react";
+import { Building2, Accessibility, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import yusrLogo from "@/assets/yusr-logo.png";
@@ -61,7 +61,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                       <Building2 className="w-8 h-8" />
                     </div>
                     <div className="text-right flex-1">
-                      <h3 className="text-xl font-bold mb-1">🏦 البنك التقليدي</h3>
+                      <h3 className="text-xl font-bold mb-1">البنك التقليدي</h3>
                       <p className="text-white/70 text-sm">الخدمات البنكية العادية</p>
                     </div>
                   </div>
@@ -85,10 +85,10 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                 >
                   <div className="flex items-center gap-4 w-full">
                     <div className="bg-white/20 p-3 rounded-full">
-                      <Heart className="w-8 h-8" />
+                      <Accessibility className="w-8 h-8" />
                     </div>
                     <div className="text-right flex-1">
-                      <h3 className="text-xl font-bold mb-1">♿ واجهة ذوي الهمم</h3>
+                      <h3 className="text-xl font-bold mb-1">ذوي الهمم</h3>
                       <p className="text-white/70 text-sm">خدمات متخصصة وسهلة الوصول</p>
                     </div>
                   </div>
