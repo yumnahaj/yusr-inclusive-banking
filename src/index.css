@@ -25,9 +25,9 @@
     --secondary: 45 90% 88%;
     --secondary-foreground: 215 25% 15%;
 
-    /* Accessibility Colors */
-    --muted: 220 15% 95%;
-    --muted-foreground: 215 15% 45%;
+    /* Accessibility Colors - High contrast for visibility */
+    --muted: 220 15% 92%;
+    --muted-foreground: 215 25% 25%;
 
     --accent: 45 95% 65%;
     --accent-foreground: 215 25% 15%;
@@ -49,24 +49,25 @@
     --ring: 215 85% 25%;
 
     --radius: 0.75rem;
+  }
 
-    /* High Contrast Mode for Accessibility */
-    --high-contrast-bg: 0 0% 0%;
-    --high-contrast-fg: 0 0% 100%;
-
-    /* Gradients for beautiful banking interface */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(215 85% 35%));
-    --gradient-gold: linear-gradient(135deg, hsl(var(--accent)), hsl(45 95% 75%));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-
-    /* Shadows for depth */
-    --shadow-elegant: 0 10px 25px -5px hsl(var(--primary) / 0.1);
-    --shadow-emergency: 0 5px 15px -3px hsl(var(--emergency) / 0.3);
-    --shadow-glow: 0 0 20px hsl(var(--accent) / 0.2);
-
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* High Contrast Mode for Accessibility - Forced high contrast */
+  .dark {
+    --background: 215 30% 5%;
+    --foreground: 0 0% 95%;
+    --card: 215 30% 8%;
+    --card-foreground: 0 0% 95%;
+    --primary: 45 100% 70%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 215 20% 15%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 215 20% 12%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 45 90% 60%;
+    --accent-foreground: 0 0% 10%;
+    --border: 215 30% 20%;
+    --input: 215 30% 15%;
+    --ring: 45 100% 70%;
   }
 
   .high-contrast {
