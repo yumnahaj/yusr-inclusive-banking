@@ -10,6 +10,7 @@ import EmergencyButton from "@/components/EmergencyButton";
 import FingerprintVerification from "@/components/FingerprintVerification";
 import FaceVerification from "@/components/FaceVerification";
 import SkipLinks from "@/components/SkipLinks";
+import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 
 type AppState = 
   | "splash" 
@@ -24,39 +25,40 @@ type AppState =
   | "face-verification-deaf"
   | "face-verification-mobility";
 
-const Index = () => {
+const IndexContent = () => {
   const [appState, setAppState] = useState<AppState>("splash");
+  const { t } = useLanguage();
 
   // WCAG 2.1 - Set page title for screen readers
   useEffect(() => {
     const pageTitles = {
-      splash: "يُسر - تطبيق البنك الرقمي",
-      main: "يُسر - الصفحة الرئيسية",
-      traditional: "يُسر - البنك التقليدي",
-      accessibility: "يُسر - واجهة ذوي الهمم",
-      "fingerprint-verification": "يُسر - التحقق من بصمة الإصبع",
-      blind: "يُسر - واجهة المكفوفين",
-      deaf: "يُسر - واجهة الصم والبكم",
-      mobility: "يُسر - واجهة ذوي الإعاقة الحركية",
-      "face-verification-traditional": "يُسر - التحقق بالوجه",
-      "face-verification-deaf": "يُسر - التحقق بالوجه",
-      "face-verification-mobility": "يُسر - التحقق بالوجه",
+      splash: t('page.splash'),
+      main: t('page.main'),
+      traditional: t('page.traditional'),
+      accessibility: t('page.accessibility'),
+      "fingerprint-verification": t('page.fingerprint'),
+      blind: t('page.blind'),
+      deaf: t('page.deaf'),
+      mobility: t('page.mobility'),
+      "face-verification-traditional": t('page.faceVerification'),
+      "face-verification-deaf": t('page.faceVerification'),
+      "face-verification-mobility": t('page.faceVerification'),
     };
     
-    document.title = pageTitles[appState] || "يُسر - تطبيق البنك الرقمي";
+    document.title = pageTitles[appState] || t('page.splash');
     
     // WCAG 2.1 - Announce page changes to screen readers
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', 'polite');
     announcement.setAttribute('aria-atomic', 'true');
     announcement.className = 'sr-only';
-    announcement.textContent = `تم تحميل صفحة ${pageTitles[appState]}`;
+    announcement.textContent = t('announce.pageLoaded').replace('{page}', pageTitles[appState]);
     document.body.appendChild(announcement);
     
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
-  }, [appState]);
+  }, [appState, t]);
 
   const renderCurrentScreen = () => {
     switch (appState) {
@@ -76,7 +78,7 @@ const Index = () => {
           <FaceVerification 
             onSuccess={() => setAppState("traditional")}
             onCancel={() => setAppState("main")}
-            title="البنك التقليدي"
+            title={t('main.traditional')}
           />
         );
 
@@ -85,7 +87,7 @@ const Index = () => {
           <FaceVerification 
             onSuccess={() => setAppState("deaf")}
             onCancel={() => setAppState("accessibility")}
-            title="واجهة الصم والبكم"
+            title={t('accessibility.deaf')}
           />
         );
 
@@ -94,7 +96,7 @@ const Index = () => {
           <FaceVerification 
             onSuccess={() => setAppState("mobility")}
             onCancel={() => setAppState("accessibility")}
-            title="واجهة ذوي الإعاقة الحركية"
+            title={t('accessibility.mobility')}
           />
         );
       
@@ -145,7 +147,7 @@ const Index = () => {
       
       {/* WCAG 2.1 - Emergency button with proper accessibility */}
       {appState !== "splash" && (
-        <aside aria-label="أزرار الطوارئ">
+        <aside aria-label={t('common.back')}>
           <EmergencyButton />
         </aside>
       )}
@@ -153,6 +155,14 @@ const Index = () => {
       {/* WCAG 2.1 - Screen reader announcements */}
       <div id="announcements" aria-live="polite" aria-atomic="true" className="sr-only"></div>
     </>
+  );
+};
+
+const Index = () => {
+  return (
+    <LanguageProvider>
+      <IndexContent />
+    </LanguageProvider>
   );
 };
 

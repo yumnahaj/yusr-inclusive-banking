@@ -3,6 +3,7 @@ import { Building2, Accessibility, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import yusrLogo from "@/assets/yusr-logo.png";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MainNavigationProps {
   onSelectBanking: () => void;
@@ -10,6 +11,7 @@ interface MainNavigationProps {
 }
 
 const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigationProps) => {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4 sm:p-6">
       <motion.div
@@ -34,8 +36,12 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
           role="img"
         />
         
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 sm:mb-6 font-bold leading-tight" id="page-title">مرحباً بك في يُسر</h1>
-        <p className="text-white/80 text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-14 px-2" role="doc-subtitle">اختر طريقة الدخول المناسبة لك</p>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 sm:mb-6 font-bold leading-tight" id="page-title">
+          {t('main.welcome')} <span className="text-primary">يُسر</span>
+        </h1>
+        <p className="text-white/80 text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-14 px-2" role="doc-subtitle">
+          {t('main.accessibility.desc')}
+        </p>
 
         <div className="space-y-6 sm:space-y-8" role="menu" aria-label="خيارات الدخول">
           <motion.div
@@ -57,8 +63,8 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
               <div className="flex items-center gap-4 sm:gap-6 w-full">
                 <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
                 <div className="text-right flex-1 min-w-0">
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">البنك التقليدي</h3>
-                  <p className="text-white/70 text-lg sm:text-xl leading-tight">الخدمات البنكية العادية</p>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">{t('main.traditional')}</h3>
+                  <p className="text-white/70 text-lg sm:text-xl leading-tight">{t('main.traditional.desc')}</p>
                 </div>
               </div>
             </div>
@@ -78,8 +84,8 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
               <div className="flex items-center gap-4 sm:gap-6 w-full">
                 <Accessibility className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
                 <div className="text-right flex-1 min-w-0">
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">ذوي الهمم</h3>
-                  <p className="text-white/70 text-lg sm:text-xl leading-tight">خدمات متخصصة وسهلة الوصول</p>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">{t('main.accessibility')}</h3>
+                  <p className="text-white/70 text-lg sm:text-xl leading-tight">{t('main.accessibility.desc')}</p>
                 </div>
               </div>
             </div>
@@ -93,7 +99,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
           >
             <div className="flex items-center justify-center gap-2 text-white/60">
               <Shield className="w-4 h-4" />
-              <span className="text-sm">محمي بتقنية أبشر</span>
+              <span className="text-sm">{t('main.security')}</span>
             </div>
           </motion.div>
         </div>
