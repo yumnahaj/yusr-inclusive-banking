@@ -64,7 +64,6 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                 <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
                 <div className="text-right flex-1 min-w-0">
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">{t('main.traditional')}</h3>
-                  <p className="text-white/70 text-lg sm:text-xl leading-tight">{t('main.traditional.desc')}</p>
                 </div>
               </div>
             </div>
