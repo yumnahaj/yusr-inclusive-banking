@@ -167,7 +167,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           </div>
 
           {/* زر تفعيل كاميرا الإيماءات */}
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="flex justify-center">
              <Button
                onClick={() => setShowHandGestureCamera(true)}
                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
