@@ -71,20 +71,20 @@
 
   .high-contrast {
     --background: 0 0% 0% !important;
-    --foreground: 60 100% 90% !important;
+    --foreground: 45 100% 70% !important;
     --card: 0 0% 0% !important;
-    --card-foreground: 60 100% 90% !important;
-    --primary: 60 100% 90% !important;
+    --card-foreground: 45 100% 70% !important;
+    --primary: 45 100% 70% !important;
     --primary-foreground: 0 0% 0% !important;
     --secondary: 0 0% 10% !important;
-    --secondary-foreground: 60 100% 90% !important;
+    --secondary-foreground: 45 100% 70% !important;
     --muted: 0 0% 10% !important;
-    --muted-foreground: 60 100% 80% !important;
+    --muted-foreground: 45 100% 60% !important;
     --accent: 0 0% 15% !important;
-    --accent-foreground: 60 100% 90% !important;
-    --border: 60 100% 80% !important;
+    --accent-foreground: 45 100% 70% !important;
+    --border: 45 100% 60% !important;
     --input: 0 0% 10% !important;
-    --ring: 60 100% 80% !important;
+    --ring: 45 100% 70% !important;
   }
 }
 
