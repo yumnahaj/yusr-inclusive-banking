@@ -287,4 +287,118 @@
   .text-banking {
     @apply text-xl md:text-2xl font-semibold;
   }
+
+  /* Enhanced Mobile responsive design */
+  @media (max-width: 640px) {
+    .btn-accessible {
+      min-height: 44px; /* WCAG 2.1 minimum touch target */
+      font-size: 0.875rem;
+      padding: 0.625rem 0.875rem;
+      touch-action: manipulation;
+    }
+    
+    /* Typography scaling for mobile */
+    h1 {
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+    
+    h2 {
+      font-size: 1.125rem;
+      line-height: 1.3;
+    }
+    
+    h3 {
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+    
+    .text-hero {
+      font-size: 2rem !important;
+      line-height: 1.2;
+    }
+    
+    /* Card improvements for mobile */
+    .card {
+      margin: 0.25rem;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+    }
+    
+    .card-mobile {
+      padding: 0.75rem !important;
+    }
+    
+    /* Balance display mobile optimization */
+    .balance-mobile {
+      font-size: 2rem !important;
+      line-height: 1.1;
+      word-break: break-all;
+    }
+    
+    /* Text improvements */
+    p, span {
+      line-height: 1.4;
+    }
+    
+    /* Ensure proper spacing */
+    .space-y-6 > * + * {
+      margin-top: 1rem;
+    }
+    
+    .space-y-8 > * + * {
+      margin-top: 1.5rem;
+    }
+    
+    /* Grid improvements */
+    .grid {
+      gap: 0.75rem;
+    }
+    
+    /* Button improvements */
+    button {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Fix text overflow issues */
+    .truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .leading-tight {
+      line-height: 1.25;
+    }
+  }
+
+  /* Tablet responsive design */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .btn-accessible {
+      min-height: 48px;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 1.375rem;
+    }
+    
+    .text-hero {
+      font-size: 3rem !important;
+    }
+  }
+
+  /* Large screen optimizations */
+  @media (min-width: 1025px) {
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
 }

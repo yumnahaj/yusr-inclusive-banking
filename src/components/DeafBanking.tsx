@@ -87,29 +87,29 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-lg sm:max-w-xl md:max-w-2xl mx-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-3">
           <Button
             onClick={onBack}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 text-xl p-6"
+            className="flex items-center gap-2 text-sm sm:text-base md:text-xl p-3 sm:p-4 md:p-6 min-h-[44px]"
             aria-label="العودة للصفحة السابقة"
           >
-            <ArrowLeft className="w-6 h-6" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
             العودة
           </Button>
           
-          <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-16 h-16" />
-            <h1 className="text-3xl font-bold text-primary">يُسر للصم والبكم</h1>
+          <div className="flex items-center gap-2 sm:gap-3 order-first sm:order-last">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
+            <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center sm:text-right">يُسر للصم والبكم</h1>
           </div>
         </div>
 
@@ -138,26 +138,26 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
         <motion.div
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
-          className="mb-12"
+          className="mb-6 sm:mb-8 md:mb-12 mx-1 sm:mx-0"
         >
           <Card 
-            className="text-center p-8 border-2 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
+            className="text-center p-4 sm:p-6 md:p-8 border-2 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
             onClick={() => handleOptionClick("balance")}
           >
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-primary mb-4">💰 الرصيد الحالي</h2>
-              <p className="text-6xl font-bold text-primary mb-2">{balance}</p>
-              <p className="text-xl text-muted-foreground">ريال سعودي</p>
-              <div className="mt-4 flex justify-center">
-                <SignLanguageIcon type="balance" className="w-12 h-12" />
+            <CardContent className="p-3 sm:p-4 md:p-6">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-3 sm:mb-4">💰 الرصيد الحالي</h2>
+              <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2 break-all">{balance}</p>
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground">ريال سعودي</p>
+              <div className="mt-3 sm:mt-4 flex justify-center">
+                <SignLanguageIcon type="balance" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
         {/* Banking Options */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-primary mb-8">🏦 الخدمات البنكية</h2>
+        <div className="space-y-3 sm:space-y-4 md:space-y-6 mx-1 sm:mx-0">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center text-primary mb-4 sm:mb-6 md:mb-8">🏦 الخدمات البنكية</h2>
           
           {bankingOptions.map((option, index) => (
             <motion.div
@@ -169,22 +169,22 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
               whileTap={{ scale: 0.98 }}
             >
               <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary">
-                <CardContent className="p-8">
+                <CardContent className="p-4 sm:p-6 md:p-8">
                   <Button
                     onClick={() => handleOptionClick(option.action)}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground"
+                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px]"
                     aria-label={option.title}
                   >
-                    <div className="flex items-center gap-6 w-full">
-                      <div className="flex items-center gap-3">
-                        <SignLanguageIcon type={option.signIcon as any} className="w-12 h-12" />
-                        <div className={`bg-gradient-to-br ${option.color} p-6 rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center`}>
-                          {option.icon}
+                    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6 w-full">
+                      <div className="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+                        <SignLanguageIcon type={option.signIcon as any} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+                        <div className={`bg-gradient-to-br ${option.color} p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center`}>
+                          <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8">{option.icon}</div>
                         </div>
                       </div>
-                      <div className="text-right flex-1">
-                        <h3 className="text-2xl font-bold mb-2">{option.title}</h3>
-                        <p className="text-muted-foreground text-lg">{option.description}</p>
+                      <div className="text-center sm:text-right flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 leading-tight">{option.title}</h3>
+                        <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-tight">{option.description}</p>
                       </div>
                     </div>
                   </Button>
@@ -199,18 +199,18 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-12 space-y-4"
+          className="mt-6 sm:mt-8 md:mt-12 space-y-3 sm:space-y-4 mx-1 sm:mx-0"
         >
-          <div className="bg-accent/20 rounded-xl p-6 text-center">
-            <h3 className="font-bold text-primary mb-2">📱 تعليمات الاستخدام</h3>
-            <p className="text-muted-foreground">
+          <div className="bg-accent/20 rounded-xl p-4 sm:p-6 text-center">
+            <h3 className="font-bold text-primary mb-2 text-sm sm:text-base">📱 تعليمات الاستخدام</h3>
+            <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
               👆 اضغط على أي خدمة لمشاهدة فيديو لغة الإشارة • 📳 اهتزاز للتأكيد • 💬 محادثة نصية متاحة
             </p>
           </div>
           
-          <div className="bg-primary/10 rounded-xl p-6 text-center">
-            <h3 className="font-bold text-primary mb-2">🎥 مترجم لغة الإشارة</h3>
-            <p className="text-muted-foreground">
+          <div className="bg-primary/10 rounded-xl p-4 sm:p-6 text-center">
+            <h3 className="font-bold text-primary mb-2 text-sm sm:text-base">🎥 مترجم لغة الإشارة</h3>
+            <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
               جميع العمليات البنكية مدعومة بفيديو توضيحي بلغة الإشارة السعودية
             </p>
           </div>

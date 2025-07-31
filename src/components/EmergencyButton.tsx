@@ -27,7 +27,7 @@ const EmergencyButton = () => {
       {/* WCAG 2.1 - Emergency button with enhanced accessibility */}
       <Button
         onClick={handleEmergencyClick}
-        className="btn-emergency"
+        className="btn-emergency text-xs sm:text-sm"
         aria-label="استغاثة سريعة - يُسر معك - الضغط للاتصال بالطوارئ"
         title="اضغط للطوارئ - يُسر معك"
         role="button"
@@ -40,19 +40,19 @@ const EmergencyButton = () => {
           }
         }}
       >
-        <Phone className="w-6 h-6" aria-hidden="true" />
+        <Phone className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
       </Button>
 
       {/* WCAG 2.1 - Accessibility controls toggle */}
       <Button
-        className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-accent hover:bg-accent/80 text-accent-foreground btn-accessible"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent hover:bg-accent/80 text-accent-foreground btn-accessible"
         onClick={() => setShowAccessibilityControls(!showAccessibilityControls)}
         aria-label={showAccessibilityControls ? "إخفاء إعدادات الوصولية" : "إظهار إعدادات الوصولية"}
         title="إعدادات الوصولية - WCAG 2.1"
         role="button"
         tabIndex={0}
       >
-        <span className="text-lg" aria-hidden="true">♿</span>
+        <span className="text-base sm:text-lg" aria-hidden="true">♿</span>
       </Button>
 
       {/* WCAG 2.1 - Accessibility controls panel */}

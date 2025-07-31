@@ -108,48 +108,48 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto"
+        className="max-w-lg sm:max-w-2xl lg:max-w-4xl mx-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-3">
           <Button
             onClick={onBack}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 text-xl p-6"
+            className="flex items-center gap-2 text-sm sm:text-base md:text-xl p-3 sm:p-4 md:p-6 min-h-[44px]"
             aria-label="العودة للصفحة السابقة"
           >
-            <ArrowLeft className="w-6 h-6" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
             العودة
           </Button>
           
-          <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-16 h-16" />
-            <h1 className="text-3xl font-bold text-primary">يُسر لذوي الإعاقة الحركية</h1>
+          <div className="flex items-center gap-2 sm:gap-3 order-first sm:order-last">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
+            <h1 className="text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl font-bold text-primary text-center sm:text-right leading-tight">يُسر لذوي الإعاقة الحركية</h1>
           </div>
         </div>
 
         {/* Control Method Selection */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary mb-4 text-center">🎛️ اختر طريقة التحكم</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mb-4 sm:mb-6 md:mb-8 mx-1 sm:mx-0">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-3 sm:mb-4 text-center">🎛️ اختر طريقة التحكم</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
             {controlMethods.map((method) => (
               <Button
                 key={method.type}
                 onClick={() => setControlMethod(method.type)}
                 variant={controlMethod === method.type ? "default" : "outline"}
-                className="h-auto p-4 text-right"
+                className="h-auto p-3 sm:p-4 text-right min-h-[60px] sm:min-h-[70px]"
               >
-                <div className="flex items-center gap-3 w-full">
-                  {method.icon}
-                  <div>
-                    <p className="font-bold">{method.title}</p>
-                    <p className="text-sm opacity-70">{method.description}</p>
+                <div className="flex items-center gap-2 sm:gap-3 w-full">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6">{method.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-xs sm:text-sm leading-tight">{method.title}</p>
+                    <p className="text-xs opacity-70 leading-tight">{method.description}</p>
                   </div>
                 </div>
               </Button>
@@ -183,20 +183,20 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
         <motion.div
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
-          className="mb-12"
+          className="mb-6 sm:mb-8 md:mb-12 mx-1 sm:mx-0"
         >
           <Card 
-            className="text-center p-12 border-4 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
+            className="text-center p-4 sm:p-6 md:p-8 lg:p-12 border-2 sm:border-4 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
             onClick={() => handleVoiceCommand("balance")}
             role="button"
             tabIndex={0}
           >
-            <CardContent className="p-6">
-              <h2 className="text-3xl font-bold text-primary mb-6">💰 الرصيد الحالي</h2>
-              <p className="text-8xl font-bold text-primary mb-4">{balance}</p>
-              <p className="text-2xl text-muted-foreground">ريال سعودي</p>
-              <div className="mt-6">
-                <p className="text-lg text-muted-foreground">
+            <CardContent className="p-3 sm:p-4 md:p-6">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-3 sm:mb-4 md:mb-6">💰 الرصيد الحالي</h2>
+              <p className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 break-all">{balance}</p>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground">ريال سعودي</p>
+              <div className="mt-3 sm:mt-4 md:mt-6">
+                <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-tight">
                   {controlMethod === "voice" && "قل: 'أعرض رصيدي'"}
                   {controlMethod === "eye" && "انظر للشاشة لمدة 3 ثوان"}
                   {controlMethod === "gesture" && "أشر بإصبعك نحو الشاشة"}
@@ -280,8 +280,8 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
         )}
 
         {/* Banking Options - Large and Spaced */}
-        <div className="space-y-8">
-          <h2 className="text-3xl font-bold text-center text-primary mb-8">🏦 الخدمات البنكية</h2>
+        <div className="space-y-4 sm:space-y-6 md:space-y-8 mx-1 sm:mx-0">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center text-primary mb-4 sm:mb-6 md:mb-8">🏦 الخدمات البنكية</h2>
           
           {bankingOptions.map((option, index) => (
             <motion.div
@@ -292,25 +292,25 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-3 hover:border-primary">
-                <CardContent className="p-12">
+              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 sm:border-3 hover:border-primary">
+                <CardContent className="p-4 sm:p-6 md:p-8 lg:p-12">
                   <Button
                     onClick={() => handleVoiceCommand(option.action)}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground"
+                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px] md:min-h-[120px]"
                     aria-label={`${option.title} - ${option.voiceCommand}`}
                   >
-                    <div className="flex items-center gap-8 w-full">
-                      <div className="bg-primary/20 p-8 rounded-3xl text-primary flex-shrink-0">
-                        {option.icon}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8 w-full">
+                      <div className="bg-primary/20 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl text-primary flex-shrink-0">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">{option.icon}</div>
                       </div>
-                      <div className="text-right flex-1">
-                        <h3 className="text-3xl font-bold mb-3">{option.title}</h3>
-                        <p className="text-muted-foreground text-xl mb-2">{option.description}</p>
-                        <div className="space-y-2">
-                          <p className="text-primary font-semibold text-lg">
+                      <div className="text-center sm:text-right flex-1 min-w-0">
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 leading-tight">{option.title}</h3>
+                        <p className="text-muted-foreground text-sm sm:text-base md:text-lg lg:text-xl mb-2 leading-tight">{option.description}</p>
+                        <div className="space-y-1 sm:space-y-2">
+                          <p className="text-primary font-semibold text-xs sm:text-sm md:text-base lg:text-lg leading-tight">
                             🎤 صوتي: "{option.voiceCommand}"
                           </p>
-                          <p className="text-blue-600 font-semibold text-lg">
+                          <p className="text-blue-600 font-semibold text-xs sm:text-sm md:text-base lg:text-lg leading-tight">
                             👁️ بصري: {option.gesture}
                           </p>
                         </div>
