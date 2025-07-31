@@ -139,7 +139,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
+    <div className="flex justify-center mt-4 sm:mt-6 md:mt-8 px-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
