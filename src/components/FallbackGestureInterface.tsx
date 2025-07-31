@@ -50,6 +50,7 @@ const FallbackGestureInterface = ({ onGestureDetected, isVisible, onClose }: Fal
   ];
 
   if (!isVisible) return null;
+  return null;
 };
 
 export default FallbackGestureInterface;
