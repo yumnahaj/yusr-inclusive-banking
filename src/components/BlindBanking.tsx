@@ -254,8 +254,9 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         className="max-w-4xl mx-auto"
       >
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto order-first">
+        {/* Header */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex justify-end mb-4">
             <Button
               onClick={onBack}
               variant="outline"
@@ -267,7 +268,14 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               <ArrowLeft className="w-6 h-6 sm:w-8 sm:h-8" />
               العودة
             </Button>
-            
+          </div>
+          
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4">
+            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-20 sm:h-20" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
+          </div>
+          
+          <div className="flex justify-center">
             <Button
               onClick={() => executeAction("high-contrast")}
               variant="outline"
@@ -280,11 +288,6 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
               <span className="hidden sm:inline">{highContrast ? 'إيقاف' : 'تفعيل'} التباين العالي</span>
               <span className="sm:hidden">تباين</span>
             </Button>
-          </div>
-          
-          <div className="flex items-center gap-3 sm:gap-4 order-last sm:order-last">
-            <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-20 sm:h-20" />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
           </div>
         </div>
 
