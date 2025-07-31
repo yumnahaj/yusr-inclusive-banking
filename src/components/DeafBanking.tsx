@@ -177,16 +177,15 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                     className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px]"
                     aria-label={option.title}
                   >
-                    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6 w-full">
-                      <div className="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start">
-                        <SignLanguageIcon type={option.signIcon as any} className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-                        <div className={`bg-gradient-to-br ${option.color} p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl text-white shadow-lg flex-shrink-0 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24`}>
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16">{option.icon}</div>
+                    <div className="flex items-center gap-2 sm:gap-3 w-full">
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <SignLanguageIcon type={option.signIcon as any} className="w-5 h-5 sm:w-6 sm:h-6" />
+                        <div className={`bg-gradient-to-br ${option.color} p-2 sm:p-3 rounded-lg text-white shadow-lg flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10`}>
+                          <div className="w-4 h-4 sm:w-5 sm:h-5">{option.icon}</div>
                         </div>
                       </div>
-                      <div className="text-center sm:text-right flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 leading-tight">{option.title}</h3>
-                        
+                      <div className="text-right flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-tight">{option.title}</h3>
                       </div>
                     </div>
                   </Button>
