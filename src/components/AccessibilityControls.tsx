@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Eye, Type, Volume2, Contrast, ZoomIn, ZoomOut } from "lucide-react";
+import { Eye, Type, Volume2, Contrast, ZoomIn, ZoomOut, Globe } from "lucide-react";
 
 interface AccessibilityControlsProps {
   onClose?: () => void;
@@ -11,6 +11,7 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
   const [fontSize, setFontSize] = useState(16);
   const [highContrast, setHighContrast] = useState(false);
   const [readingMode, setReadingMode] = useState(false);
+  const [language, setLanguage] = useState('ar');
 
   // WCAG 2.1 - Font size controls (minimum 16px, maximum 24px)
   const increaseFontSize = () => {
@@ -46,11 +47,21 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
     }
   };
 
+  // Language toggle
+  const toggleLanguage = () => {
+    const newLanguage = language === 'ar' ? 'en' : 'ar';
+    setLanguage(newLanguage);
+    localStorage.setItem('app-language', newLanguage);
+    // You would typically implement full app language change here
+    window.location.reload(); // Temporary solution to reload with new language
+  };
+
   // WCAG 2.1 - Load user preferences
   useEffect(() => {
     const savedFontSize = localStorage.getItem('accessibility-font-size');
     const savedHighContrast = localStorage.getItem('accessibility-high-contrast');
     const savedReadingMode = localStorage.getItem('accessibility-reading-mode');
+    const savedLanguage = localStorage.getItem('app-language');
 
     if (savedFontSize) {
       setFontSize(parseInt(savedFontSize));
@@ -66,6 +77,10 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
       setReadingMode(true);
       document.body.classList.add('reading-mode');
     }
+
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+    }
   }, []);
 
   // WCAG 2.1 - Save user preferences
@@ -73,7 +88,8 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
     localStorage.setItem('accessibility-font-size', fontSize.toString());
     localStorage.setItem('accessibility-high-contrast', highContrast.toString());
     localStorage.setItem('accessibility-reading-mode', readingMode.toString());
-  }, [fontSize, highContrast, readingMode]);
+    localStorage.setItem('app-language', language);
+  }, [fontSize, highContrast, readingMode, language]);
 
   return (
     <Card className="fixed top-4 right-4 z-50 w-80 shadow-xl">
@@ -167,6 +183,22 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
               aria-label="تجربة قارئ النصوص"
             >
               تجربة
+            </Button>
+          </div>
+
+          {/* Language Toggle */}
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              اللغة
+            </span>
+            <Button
+              variant={language === 'en' ? "default" : "outline"}
+              size="sm"
+              onClick={toggleLanguage}
+              aria-label={language === 'ar' ? "تغيير إلى الإنجليزية" : "Change to Arabic"}
+            >
+              {language === 'ar' ? "English" : "العربية"}
             </Button>
           </div>
         </div>
