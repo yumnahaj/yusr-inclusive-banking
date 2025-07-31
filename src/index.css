@@ -72,19 +72,25 @@
   .high-contrast {
     --background: 0 0% 0% !important;
     --foreground: 0 0% 100% !important;
-    --card: 0 0% 0% !important;
+    --card: 0 0% 5% !important;
     --card-foreground: 0 0% 100% !important;
     --primary: 0 0% 100% !important;
     --primary-foreground: 0 0% 0% !important;
-    --secondary: 0 0% 10% !important;
+    --secondary: 0 0% 15% !important;
     --secondary-foreground: 0 0% 100% !important;
     --muted: 0 0% 10% !important;
     --muted-foreground: 0 0% 90% !important;
-    --accent: 0 0% 15% !important;
-    --accent-foreground: 0 0% 100% !important;
-    --border: 0 0% 100% !important;
+    --accent: 60 100% 50% !important;
+    --accent-foreground: 0 0% 0% !important;
+    --border: 0 0% 80% !important;
     --input: 0 0% 10% !important;
-    --ring: 0 0% 100% !important;
+    --ring: 60 100% 50% !important;
+    --destructive: 0 100% 60% !important;
+    --destructive-foreground: 0 0% 100% !important;
+    --emergency: 0 100% 60% !important;
+    --emergency-foreground: 0 0% 100% !important;
+    --success: 120 100% 50% !important;
+    --success-foreground: 0 0% 0% !important;
   }
 }
 
@@ -139,19 +145,19 @@
     .high-contrast {
       --background: 0 0% 0% !important;
       --foreground: 0 0% 100% !important;
-      --card: 0 0% 0% !important;
+      --card: 0 0% 5% !important;
       --card-foreground: 0 0% 100% !important;
       --primary: 0 0% 100% !important;
       --primary-foreground: 0 0% 0% !important;
       --secondary: 0 0% 15% !important;
       --secondary-foreground: 0 0% 100% !important;
-      --muted: 0 0% 15% !important;
+      --muted: 0 0% 10% !important;
       --muted-foreground: 0 0% 85% !important;
-      --accent: 0 0% 20% !important;
-      --accent-foreground: 0 0% 100% !important;
-      --border: 0 0% 100% !important;
+      --accent: 60 100% 50% !important;
+      --accent-foreground: 0 0% 0% !important;
+      --border: 0 0% 80% !important;
       --input: 0 0% 15% !important;
-      --ring: 0 0% 100% !important;
+      --ring: 60 100% 50% !important;
     }
   }
 
