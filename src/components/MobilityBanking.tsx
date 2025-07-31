@@ -193,7 +193,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
           >
             <CardContent className="p-3 sm:p-4 md:p-6">
               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary mb-3 sm:mb-4 md:mb-6">💰 الرصيد الحالي</h2>
-              <p className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 break-all">{balance}</p>
+              <p className="text-6xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold text-primary mb-2 sm:mb-3 md:mb-4 break-all">{balance}</p>
               <div className="mt-3 sm:mt-4 md:mt-6">
                 <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-tight">
                   {controlMethod === "voice" && "قل: 'أعرض رصيدي'"}
