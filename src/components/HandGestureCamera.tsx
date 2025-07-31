@@ -1,4 +1,4 @@
-هكذا اضعه import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Camera, CameraOff, Hand, RotateCcw, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
