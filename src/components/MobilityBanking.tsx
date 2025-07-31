@@ -300,8 +300,8 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                     aria-label={`${option.title} - ${option.voiceCommand}`}
                   >
                     <div className="flex items-center gap-6 w-full">
-                      <div className="bg-primary/20 p-4 rounded-xl text-primary flex-shrink-0">
-                        <div className="w-10 h-10">{option.icon}</div>
+                      <div className="bg-primary/20 p-2 rounded-lg text-primary w-fit">
+                        <div className="w-6 h-6">{option.icon}</div>
                       </div>
                       <div className="text-right flex-1">
                         <h3 className="text-xl sm:text-2xl font-bold mb-2">{option.title}</h3>
