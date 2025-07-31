@@ -197,25 +197,7 @@ if (!isVisible) return null;
             </div>
           )}
 
-          {error && (
-            <div className="text-center py-4 bg-red-50 rounded-lg p-4">
-              <p className="text-red-600 font-semibold mb-2">{error}</p>
-              {!capabilities.hasCamera && (
-                <p className="text-sm text-gray-600">تأكد من وجود كاميرا متصلة ومن إعطاء الإذن للوصول إليها</p>
-              )}
-              {!capabilities.supportsMediaPipe && capabilities.hasCamera && (
-                <div className="text-sm text-gray-600">
-                  <p>تتبع الإيماءات غير مدعوم على هذا الجهاز</p>
-                  <p>جرب:</p>
-                  <ul className="list-disc list-inside mt-1">
-                    <li>متصفح Chrome الحديث</li>
-                    <li>تحديث المتصفح للإصدار الأحدث</li>
-                    <li>استخدام جهاز كمبيوتر</li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
+ 
           
           {/* زر التبديل للوضع التفاعلي */}
           {!capabilities.supportsMediaPipe && (
