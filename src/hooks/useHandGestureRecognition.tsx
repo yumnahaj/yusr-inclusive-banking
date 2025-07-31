@@ -18,6 +18,7 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentGesture, setCurrentGesture] = useState<GestureType>('none');
+  const gestureCountRef = useRef<{ gesture: GestureType; count: number }>({ gesture: 'none', count: 0 });
 
   // تحليل إيماءة اليد بناءً على النقاط المكتشفة
   const analyzeGesture = (landmarks: any[]): GestureType => {
@@ -29,46 +30,67 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
     // النقاط الأساسية لليد
     const thumb_tip = hand[4];
     const thumb_ip = hand[3];
+    const thumb_mcp = hand[2];
     const index_tip = hand[8];
     const index_pip = hand[6];
+    const index_mcp = hand[5];
     const middle_tip = hand[12];
     const middle_pip = hand[10];
+    const middle_mcp = hand[9];
     const ring_tip = hand[16];
     const ring_pip = hand[14];
+    const ring_mcp = hand[13];
     const pinky_tip = hand[20];
     const pinky_pip = hand[18];
+    const pinky_mcp = hand[17];
     const wrist = hand[0];
 
-    // حساب المسافات والزوايا
-    const isThumbUp = thumb_tip.y < thumb_ip.y;
-    const isIndexUp = index_tip.y < index_pip.y;
-    const isMiddleUp = middle_tip.y < middle_pip.y;
-    const isRingUp = ring_tip.y < ring_pip.y;
-    const isPinkyUp = pinky_tip.y < pinky_pip.y;
+    // حساب الأصابع المرفوعة بطريقة محسنة
+    const isThumbUp = thumb_tip.x > thumb_mcp.x; // للإبهام نستخدم X بدلاً من Y
+    const isIndexUp = index_tip.y < index_pip.y && index_pip.y < index_mcp.y;
+    const isMiddleUp = middle_tip.y < middle_pip.y && middle_pip.y < middle_mcp.y;
+    const isRingUp = ring_tip.y < ring_pip.y && ring_pip.y < ring_mcp.y;
+    const isPinkyUp = pinky_tip.y < pinky_pip.y && pinky_pip.y < pinky_mcp.y;
 
     // عدد الأصابع المرفوعة
     const fingersUp = [isThumbUp, isIndexUp, isMiddleUp, isRingUp, isPinkyUp].filter(Boolean).length;
 
-    // تحليل الإيماءات
+    console.log('Gesture Analysis:', {
+      fingersUp,
+      isThumbUp,
+      isIndexUp,
+      isMiddleUp,
+      isRingUp,
+      isPinkyUp
+    });
+
+    // تحليل الإيماءات بدقة محسنة
     if (fingersUp === 5) {
+      console.log('Detected: open_hand');
       return 'open_hand'; // ✋ يد مفتوحة
-    } else if (fingersUp === 0 || fingersUp === 1) {
+    } else if (fingersUp === 0) {
+      console.log('Detected: closed_fist');
       return 'closed_fist'; // 👊 قبضة مغلقة
     } else if (isIndexUp && !isMiddleUp && !isRingUp && !isPinkyUp) {
-      // تحقق من اتجاه الإشارة
+      // تحقق من اتجاه الإشارة بطريقة محسنة
       const pointing_direction = index_tip.x - wrist.x;
-      if (pointing_direction > 0.1) {
-        return 'pointing_right'; // 👉 إشارة لليمين
+      console.log('Pointing direction:', pointing_direction);
+      if (Math.abs(pointing_direction) > 0.05) {
+        console.log('Detected: pointing_right');
+        return 'pointing_right'; // 👉 إشارة
       }
     } else if (fingersUp === 4 && !isThumbUp) {
+      console.log('Detected: raised_hand');
       return 'raised_hand'; // 🤚 يد مرفوعة (بدون الإبهام)
     } else if (isThumbUp && isIndexUp && !isMiddleUp && !isRingUp && !isPinkyUp) {
-      // تحقق من شكل OK
+      // تحقق من شكل OK بحد أكثر مرونة
       const thumb_index_distance = Math.sqrt(
         Math.pow(thumb_tip.x - index_tip.x, 2) + 
         Math.pow(thumb_tip.y - index_tip.y, 2)
       );
-      if (thumb_index_distance < 0.05) {
+      console.log('OK gesture distance:', thumb_index_distance);
+      if (thumb_index_distance < 0.08) {
+        console.log('Detected: ok_gesture');
         return 'ok_gesture'; // 👌 إيماءة OK
       }
     }
@@ -89,11 +111,22 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
       const gesture = analyzeGesture(results.multiHandLandmarks);
       
-      if (gesture !== currentGesture) {
+      // نظام استقرار الإيماءة
+      if (gesture === gestureCountRef.current.gesture) {
+        gestureCountRef.current.count++;
+      } else {
+        gestureCountRef.current = { gesture, count: 1 };
+      }
+
+      // إرسال الإيماءة فقط إذا كانت مستقرة لـ 3 إطارات على الأقل
+      if (gestureCountRef.current.count >= 3 && gesture !== currentGesture && gesture !== 'none') {
+        console.log('Stable gesture detected:', gesture);
         setCurrentGesture(gesture);
-        if (gesture !== 'none') {
-          onGestureDetected(gesture);
-        }
+        onGestureDetected(gesture);
+        gestureCountRef.current = { gesture: 'none', count: 0 }; // إعادة تعيين لتجنب التكرار
+      } else if (gesture === 'none') {
+        setCurrentGesture('none');
+        gestureCountRef.current = { gesture: 'none', count: 0 };
       }
 
       // رسم النقاط على اللوحة (اختياري للتصحيح)
@@ -163,8 +196,8 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
 
       hands.setOptions({
         maxNumHands: 1,
-        modelComplexity: 0, // تقليل التعقيد للأجهزة المحمولة
-        minDetectionConfidence: 0.7,
+        modelComplexity: 1, // زيادة التعقيد للحصول على دقة أفضل
+        minDetectionConfidence: 0.6, // تقليل قليلاً للحساسية
         minTrackingConfidence: 0.5
       });
 
