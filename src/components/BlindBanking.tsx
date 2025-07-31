@@ -269,7 +269,7 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
             </Button>
             
             <Button
-              onClick={() => handleSingleClick("high-contrast")}
+              onClick={() => executeAction("high-contrast")}
               variant="outline"
               size="lg"
               className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible"
@@ -300,8 +300,8 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
         {/* Confirmation Status */}
         {awaitingConfirmation && (
           <div className="mb-6 sm:mb-8 text-center">
-            <div className="rounded-xl p-6 sm:p-8 bg-yellow-100">
-              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-yellow-800">
+            <div className="rounded-xl p-6 sm:p-8 bg-accent/20 border border-accent">
+              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-accent-foreground">
                 🔄 انتظار التأكيد - اضغط مرة أخرى أو قل "نعم"
               </p>
             </div>
