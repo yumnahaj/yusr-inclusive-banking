@@ -186,7 +186,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                       </div>
                       <div className="text-center sm:text-right flex-1 min-w-0">
                         <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 sm:mb-2 leading-tight">{option.title}</h3>
-                        <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-tight">{option.description}</p>
+                        
                       </div>
                     </div>
                   </Button>
