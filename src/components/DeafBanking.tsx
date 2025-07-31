@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, MessageSquare, CreditCard, FileText, Settings } from "lucide-react";
+import { ArrowLeft, MessageSquare, CreditCard, FileText, Settings, Hand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
@@ -7,6 +7,8 @@ import SignLanguageIcon from "./SignLanguageIcon";
 import BalanceView from "./BalanceView";
 import StatementView from "./StatementView";
 import TransferView from "./TransferView";
+import HandGestureCamera from "./HandGestureCamera";
+import { GestureType } from "@/hooks/useHandGestureRecognition";
 
 interface DeafBankingProps {
   onBack: () => void;
@@ -16,6 +18,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
   const [balance] = useState("12,345");
   const [showSignLanguageVideo, setShowSignLanguageVideo] = useState(false);
   const [currentView, setCurrentView] = useState<"main" | "balance" | "statement" | "transfer">("main");
+  const [showHandGestureCamera, setShowHandGestureCamera] = useState(false);
 
   if (currentView === "balance") {
     return <BalanceView onBack={() => setCurrentView("main")} balance={balance} />;
@@ -86,6 +89,33 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
     }, 3000);
   };
 
+  // تحويل الإيماءة إلى إجراء
+  const handleGestureDetected = (gesture: GestureType) => {
+    let action = "";
+    
+    switch (gesture) {
+      case 'open_hand':
+        action = "balance";
+        break;
+      case 'closed_fist':
+        action = "statement";
+        break;
+      case 'pointing_right':
+        action = "transfer";
+        break;
+      case 'raised_hand':
+      case 'ok_gesture':
+        action = "help";
+        break;
+      default:
+        return;
+    }
+
+    // إغلاق الكاميرا وتنفيذ الإجراء
+    setShowHandGestureCamera(false);
+    handleOptionClick(action);
+  };
+
   return (
     <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
       <motion.div
@@ -109,11 +139,29 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
             </Button>
           </div>
           
-          <div className="flex items-center justify-center gap-2 sm:gap-3">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
             <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
             <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center">يُسر للصم والبكم</h1>
           </div>
+
+          {/* زر تفعيل كاميرا الإيماءات */}
+          <div className="flex justify-center">
+            <Button
+              onClick={() => setShowHandGestureCamera(true)}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+            >
+              <Hand className="w-5 h-5" />
+              🤲 التحكم بإيماءات اليد
+            </Button>
+          </div>
         </div>
+
+        {/* كاميرا الإيماءات */}
+        <HandGestureCamera
+          onGestureDetected={handleGestureDetected}
+          isVisible={showHandGestureCamera}
+          onClose={() => setShowHandGestureCamera(false)}
+        />
 
         {/* Sign Language Video Area */}
         {showSignLanguageVideo && (
@@ -203,7 +251,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           <div className="bg-accent/20 rounded-xl p-4 sm:p-6 text-center">
             <h3 className="font-bold text-primary mb-2 text-sm sm:text-base">📱 تعليمات الاستخدام</h3>
             <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
-              👆 اضغط على أي خدمة لمشاهدة فيديو لغة الإشارة • 📳 اهتزاز للتأكيد • 💬 محادثة نصية متاحة
+              👆 اضغط على أي خدمة لمشاهدة فيديو لغة الإشارة • 🤲 استخدم إيماءات اليد للتحكم • 📳 اهتزاز للتأكيد
             </p>
           </div>
           
@@ -211,6 +259,13 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
             <h3 className="font-bold text-primary mb-2 text-sm sm:text-base">🎥 مترجم لغة الإشارة</h3>
             <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
               جميع العمليات البنكية مدعومة بفيديو توضيحي بلغة الإشارة السعودية
+            </p>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 sm:p-6 text-center">
+            <h3 className="font-bold text-blue-700 mb-2 text-sm sm:text-base">🤲 التحكم بالإيماءات</h3>
+            <p className="text-blue-600 text-xs sm:text-sm leading-tight">
+              ✋ يد مفتوحة = رصيدي • 👊 قبضة = كشف الحساب • 👉 إشارة = تحويل • 🤚 يد مرفوعة = مساعدة
             </p>
           </div>
         </motion.div>
