@@ -177,12 +177,10 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
                     className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground min-h-[80px] sm:min-h-[100px]"
                     aria-label={option.title}
                   >
-                    <div className="flex items-center gap-2 sm:gap-3 w-full">
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <SignLanguageIcon type={option.signIcon as any} className="w-5 h-5 sm:w-6 sm:h-6" />
-                        <div className={`bg-gradient-to-br ${option.color} p-2 sm:p-3 rounded-lg text-white shadow-lg flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10`}>
-                          <div className="w-4 h-4 sm:w-5 sm:h-5">{option.icon}</div>
-                        </div>
+                    <div className="flex items-center gap-3 w-full">
+                      <SignLanguageIcon type={option.signIcon as any} className="w-5 h-5 sm:w-6 sm:h-6" />
+                      <div className={`bg-gradient-to-br ${option.color} p-2 sm:p-3 rounded-lg text-white shadow-lg flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10`}>
+                        <div className="w-4 h-4 sm:w-5 sm:h-5">{option.icon}</div>
                       </div>
                       <div className="text-right flex-1 min-w-0">
                         <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-tight">{option.title}</h3>

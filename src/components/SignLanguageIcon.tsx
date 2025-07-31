@@ -24,7 +24,7 @@ const SignLanguageIcon = ({ type, className = "w-8 h-8" }: SignLanguageIconProps
   };
 
   return (
-    <div className={`flex items-center justify-center ${className} text-6xl sm:text-7xl md:text-8xl`}>
+    <div className={`flex items-center justify-center ${className} text-lg sm:text-xl`}>
       {getHandEmoji()}
     </div>
   );
