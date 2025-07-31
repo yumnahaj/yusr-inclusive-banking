@@ -10,7 +10,7 @@ interface MobilityBankingProps {
 
 const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
   const [balance] = useState("12,345");
-  const [controlMethod, setControlMethod] = useState<"voice" | "eye" | "gesture">("voice");
+  const [controlMethod, setControlMethod] = useState<"voice" | "eye">("voice");
   const [isListening, setIsListening] = useState(false);
   const [showBalance, setShowBalance] = useState(false);
   const [showStatement, setShowStatement] = useState(false);
@@ -32,12 +32,6 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
       icon: <Eye className="w-6 h-6" />,
       title: "👁️ تتبع العين",
       description: "تحكم بحركة العين"
-    },
-    {
-      type: "gesture" as const,
-      icon: <Hand className="w-6 h-6" />,
-      title: "🤚 إيماءات اليد",
-      description: "تحكم بإيماءات بسيطة"
     }
   ];
 
@@ -171,9 +165,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                 <div className="flex items-center justify-center gap-3">
                   <Mic className="w-8 h-8 text-primary animate-pulse" />
                   <p className="text-primary font-bold text-xl">
-                    {controlMethod === "voice" ? "🎤 أستمع إليك..." : 
-                     controlMethod === "eye" ? "👁️ أتتبع عينيك..." : 
-                     "🤚 أراقب إيماءاتك..."}
+                    {controlMethod === "voice" ? "🎤 أستمع إليك..." : "👁️ أتتبع عينيك..."}
                   </p>
                 </div>
               </CardContent>
@@ -200,7 +192,6 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                 <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-tight">
                   {controlMethod === "voice" && "قل: 'أعرض رصيدي'"}
                   {controlMethod === "eye" && "انظر للشاشة لمدة 3 ثوان"}
-                  {controlMethod === "gesture" && "أشر بإصبعك نحو الشاشة"}
                 </p>
               </div>
             </CardContent>
@@ -324,7 +315,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
         >
           <div className="bg-accent/20 rounded-xl p-8">
             <h3 className="font-bold text-primary mb-4 text-2xl text-center">🎛️ تعليمات التحكم</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
               <div>
                 <Mic className="w-12 h-12 text-primary mx-auto mb-3" />
                 <h4 className="font-bold text-lg mb-2">التحكم الصوتي</h4>
@@ -334,11 +325,6 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                 <Eye className="w-12 h-12 text-primary mx-auto mb-3" />
                 <h4 className="font-bold text-lg mb-2">تتبع العين</h4>
                 <p className="text-muted-foreground">انظر للخدمة لمدة 3 ثوان لتنفيذها</p>
-              </div>
-              <div>
-                <Hand className="w-12 h-12 text-primary mx-auto mb-3" />
-                <h4 className="font-bold text-lg mb-2">الإيماءات</h4>
-                <p className="text-muted-foreground">استخدم إيماءات بسيطة أمام الكاميرا</p>
               </div>
             </div>
           </div>
