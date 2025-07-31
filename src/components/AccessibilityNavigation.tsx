@@ -115,35 +115,31 @@ const AccessibilityNavigation = ({
                 whileTap: {}
               })}
             >
-              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30">
-                <CardContent className="p-8">
-                  <Button
-                    onClick={option.onClick}
-                    className="w-full h-auto p-0 bg-transparent hover:bg-transparent text-foreground btn-accessible"
-                    aria-label={`${option.title} - ${option.description}`}
-                    role="menuitem"
-                    tabIndex={0}
-                  >
-                    <div className="flex items-center gap-6 w-full">
-                      <div className={`bg-gradient-to-br ${option.color} p-4 rounded-2xl text-white shadow-lg flex-shrink-0`}>
-                        {option.icon}
-                      </div>
-                      <div className="text-right flex-1">
-                        <h3 className="text-xl font-bold mb-2" id={`option-${index}-title`}>
-                          {option.title}
-                        </h3>
-                        <p 
-                          className="text-muted-foreground" 
-                          id={`option-${index}-description`}
-                          aria-describedby={`option-${index}-title`}
-                        >
-                          {option.description}
-                        </p>
-                      </div>
-                    </div>
-                  </Button>
-                </CardContent>
-              </Card>
+              <Button
+                onClick={option.onClick}
+                className="w-full h-auto p-6 bg-transparent hover:bg-accent/10 text-foreground btn-accessible rounded-2xl border-0 transition-all duration-300 hover:scale-[1.02]"
+                aria-label={`${option.title} - ${option.description}`}
+                role="menuitem"
+                tabIndex={0}
+              >
+                <div className="flex items-center gap-6 w-full">
+                  <div className={`bg-gradient-to-br ${option.color} p-4 rounded-2xl text-white shadow-lg flex-shrink-0`}>
+                    {option.icon}
+                  </div>
+                  <div className="text-right flex-1">
+                    <h3 className="text-xl font-bold mb-2 text-foreground" id={`option-${index}-title`}>
+                      {option.title}
+                    </h3>
+                    <p 
+                      className="text-muted-foreground" 
+                      id={`option-${index}-description`}
+                      aria-describedby={`option-${index}-title`}
+                    >
+                      {option.description}
+                    </p>
+                  </div>
+                </div>
+              </Button>
             </motion.div>
           ))}
         </div>
