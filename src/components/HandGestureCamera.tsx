@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Camera, CameraOff, Hand } from "lucide-react";
+import { Camera, CameraOff, Hand, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useHandGestureRecognition, GestureType } from "@/hooks/useHandGestureRecognition";
@@ -13,20 +13,35 @@ interface HandGestureCameraProps {
 
 const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestureCameraProps) => {
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
 
   const { 
     videoRef, 
     canvasRef, 
     isLoading, 
     error, 
-    currentGesture 
+    currentGesture,
+    stopCamera,
+    startCamera
   } = useHandGestureRecognition({
     onGestureDetected,
-    isActive: isCameraActive
+    isActive: isCameraActive,
+    facingMode
   });
 
   const toggleCamera = () => {
     setIsCameraActive(!isCameraActive);
+  };
+
+  const switchCamera = async () => {
+    const newFacingMode = facingMode === 'user' ? 'environment' : 'user';
+    setFacingMode(newFacingMode);
+    if (isCameraActive) {
+      stopCamera();
+      setTimeout(() => {
+        startCamera();
+      }, 100);
+    }
   };
 
   const getGestureEmoji = (gesture: GestureType): string => {
@@ -83,17 +98,21 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
                 <div className="relative w-full h-full">
                   <video
                     ref={videoRef}
-                    className="w-full h-full object-cover transform scale-x-[-1]"
+                    className={`w-full h-full object-cover ${facingMode === 'user' ? 'transform scale-x-[-1]' : ''}`}
                     autoPlay
                     playsInline
                     muted
                   />
                   <canvas
                     ref={canvasRef}
-                    className="absolute top-0 left-0 w-full h-full transform scale-x-[-1]"
+                    className={`absolute top-0 left-0 w-full h-full ${facingMode === 'user' ? 'transform scale-x-[-1]' : ''}`}
                     width={640}
                     height={480}
                   />
+                  {/* مؤشر نوع الكاميرا */}
+                  <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                    {facingMode === 'user' ? 'الكاميرا الأمامية' : 'الكاميرا الخلفية'}
+                  </div>
                 </div>
               ) : (
                 <div className="text-center">
@@ -134,6 +153,18 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
                 </>
               )}
             </Button>
+            
+            {isCameraActive && (
+              <Button
+                onClick={switchCamera}
+                disabled={isLoading}
+                className="flex items-center gap-2"
+                variant="outline"
+              >
+                <RotateCcw className="w-5 h-5" />
+                {facingMode === 'user' ? 'الكاميرا الخلفية' : 'الكاميرا الأمامية'}
+              </Button>
+            )}
           </div>
 
           {/* رسائل الحالة */}

@@ -1,19 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { Hands, Results } from '@mediapipe/hands';
-import { Camera } from '@mediapipe/camera_utils';
 
 export type GestureType = 'open_hand' | 'closed_fist' | 'pointing_right' | 'raised_hand' | 'ok_gesture' | 'none';
 
 interface HandGestureRecognitionProps {
   onGestureDetected: (gesture: GestureType) => void;
   isActive: boolean;
+  facingMode?: 'user' | 'environment';
 }
 
-export const useHandGestureRecognition = ({ onGestureDetected, isActive }: HandGestureRecognitionProps) => {
+export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingMode = 'user' }: HandGestureRecognitionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const handsRef = useRef<Hands | null>(null);
-  const cameraRef = useRef<Camera | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const animationRef = useRef<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentGesture, setCurrentGesture] = useState<GestureType>('none');
@@ -115,12 +116,43 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive }: HandG
     }
   };
 
+  const processFrame = async () => {
+    if (handsRef.current && videoRef.current && videoRef.current.readyState === 4) {
+      await handsRef.current.send({ image: videoRef.current });
+    }
+    if (isActive && handsRef.current) {
+      animationRef.current = requestAnimationFrame(processFrame);
+    }
+  };
+
   const startCamera = async () => {
     if (!videoRef.current) return;
 
     try {
       setIsLoading(true);
       setError(null);
+
+      // طلب الإذن للوصول إلى الكاميرا مع constraints محددة للأجهزة المحمولة
+      const constraints = {
+        video: {
+          facingMode,
+          width: { ideal: 640 },
+          height: { ideal: 480 },
+          frameRate: { ideal: 30, max: 30 }
+        },
+        audio: false
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      
+      videoRef.current.srcObject = stream;
+      await new Promise((resolve) => {
+        videoRef.current!.onloadedmetadata = () => {
+          videoRef.current!.play();
+          resolve(null);
+        };
+      });
 
       // إعداد MediaPipe Hands
       const hands = new Hands({
@@ -131,44 +163,57 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive }: HandG
 
       hands.setOptions({
         maxNumHands: 1,
-        modelComplexity: 1,
-        minDetectionConfidence: 0.5,
+        modelComplexity: 0, // تقليل التعقيد للأجهزة المحمولة
+        minDetectionConfidence: 0.7,
         minTrackingConfidence: 0.5
       });
 
       hands.onResults(onResults);
       handsRef.current = hands;
 
-      // إعداد الكاميرا
-      const camera = new Camera(videoRef.current, {
-        onFrame: async () => {
-          if (handsRef.current && videoRef.current) {
-            await handsRef.current.send({ image: videoRef.current });
-          }
-        },
-        width: 640,
-        height: 480
-      });
-
-      cameraRef.current = camera;
-      await camera.start();
+      // بدء معالجة الإطارات
+      processFrame();
+      
       setIsLoading(false);
     } catch (err) {
       console.error('Error starting camera:', err);
-      setError('لا يمكن الوصول إلى الكاميرا');
+      let errorMessage = 'لا يمكن الوصول إلى الكاميرا';
+      
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          errorMessage = 'تم رفض الإذن للوصول إلى الكاميرا';
+        } else if (err.name === 'NotFoundError') {
+          errorMessage = 'لم يتم العثور على كاميرا';
+        } else if (err.name === 'NotSupportedError') {
+          errorMessage = 'الكاميرا غير مدعومة في هذا المتصفح';
+        }
+      }
+      
+      setError(errorMessage);
       setIsLoading(false);
     }
   };
 
   const stopCamera = () => {
-    if (cameraRef.current) {
-      cameraRef.current.stop();
-      cameraRef.current = null;
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
     }
+    
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    
     if (handsRef.current) {
       handsRef.current.close();
       handsRef.current = null;
     }
+    
     setCurrentGesture('none');
   };
 
