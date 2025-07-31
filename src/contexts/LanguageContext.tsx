@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import arTranslations from '../locales/ar';
+import enTranslations from '../locales/en';
 
 interface LanguageContextType {
   currentLanguage: 'ar' | 'en';
@@ -36,8 +38,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const t = (key: string): string => {
-    // Dynamic import of translations based on current language
-    const translations = require(`../locales/${currentLanguage}.ts`).default;
+    const translations = currentLanguage === 'ar' ? arTranslations : enTranslations;
     return translations[key] || key;
   };
 
