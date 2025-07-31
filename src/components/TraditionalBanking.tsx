@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CreditCard, FileText, DollarSign, MapPin, Settings, Phone, Banknote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, cloneElement } from "react";
 import BalanceView from "./BalanceView";
 import StatementView from "./StatementView";
 import TransferView from "./TransferView";
@@ -126,7 +126,7 @@ const TraditionalBanking = ({ onBack }: TraditionalBankingProps) => {
               >
                 <CardContent className="p-3 sm:p-4 md:p-6 text-center flex flex-col justify-center h-full">
                   <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full ${service.color} flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 text-white shadow-lg`}>
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8">{service.icon}</div>
+                    {cloneElement(service.icon, { className: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })}
                   </div>
                   <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2 text-foreground leading-tight">{service.title}</h3>
                   <p className="text-muted-foreground text-xs sm:text-sm leading-tight">{service.description}</p>
