@@ -11,7 +11,7 @@ const BlindBanking = ({
 }: BlindBankingProps) => {
   const [balance] = useState("12,345");
   const [isListening, setIsListening] = useState(false);
-  const [highContrast, setHighContrast] = useState(false);
+  
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [clickCount, setClickCount] = useState(0);
@@ -185,11 +185,6 @@ const BlindBanking = ({
         setIsListening(true);
         setTimeout(() => setIsListening(false), 5000);
         break;
-      case "high-contrast":
-        const newHighContrast = !highContrast;
-        setHighContrast(newHighContrast);
-        speakText(newHighContrast ? "تم تفعيل وضع التباين العالي" : "تم إيقاف وضع التباين العالي");
-        break;
     }
   };
 
@@ -216,7 +211,7 @@ const BlindBanking = ({
       };
     }
   }, [awaitingConfirmation, pendingAction]);
-  return <div className={`min-h-screen p-2 sm:p-6 transition-all duration-500 ${highContrast ? 'high-contrast' : ''}`} role="main" aria-label="واجهة البنك للمكفوفين">
+  return <div className="min-h-screen p-2 sm:p-6 transition-all duration-500" role="main" aria-label="واجهة البنك للمكفوفين">
       <motion.div initial={{
       opacity: 0,
       y: 20
@@ -241,13 +236,6 @@ const BlindBanking = ({
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
           </div>
           
-          <div className="flex justify-center">
-            <Button onClick={() => executeAction("high-contrast")} variant="outline" size="lg" className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible" aria-label="تبديل وضع التباين العالي لضعاف البصر" onFocus={() => speakText("زر التباين العالي")}>
-              <Palette className="w-6 h-6 sm:w-8 sm:h-8" />
-              <span className="hidden sm:inline">{highContrast ? 'إيقاف' : 'تفعيل'} التباين العالي</span>
-              <span className="sm:hidden">تباين</span>
-            </Button>
-          </div>
         </div>
 
         {/* Voice Status */}
