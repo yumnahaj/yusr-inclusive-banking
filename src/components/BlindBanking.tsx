@@ -255,7 +255,7 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
       >
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto order-first">
             <Button
               onClick={onBack}
               variant="outline"
@@ -282,7 +282,7 @@ const BlindBanking = ({ onBack }: BlindBankingProps) => {
             </Button>
           </div>
           
-          <div className="flex items-center gap-3 sm:gap-4 order-first sm:order-last">
+          <div className="flex items-center gap-3 sm:gap-4 order-last sm:order-last">
             <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-12 h-12 sm:w-20 sm:h-20" />
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">يُسر للمكفوفين</h1>
           </div>
