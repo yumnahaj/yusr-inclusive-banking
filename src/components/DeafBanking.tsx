@@ -168,7 +168,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
               className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
             >
               <Hand className="w-5 h-5" />
-              🤲 التحكم بإيماءات اليد
+              التحكم بإيماءات اليد
             </Button>
           </div>
         </div>

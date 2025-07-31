@@ -219,70 +219,186 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
       setError(null);
 
       // إعدادات كاميرا محسنة للجوال
-      const constraints = {
-        video: {
-          facingMode,
-          width: { ideal: isMobile ? 480 : 640 },
-          height: { ideal: isMobile ? 360 : 480 },
-          frameRate: { ideal: isMobile ? 15 : 25, max: isMobile ? 20 : 30 }
-        },
-        audio: false
-      };
+      let constraints;
       
-      console.log('📱 Camera constraints:', constraints);
+      if (isMobile) {
+        // إعدادات خاصة للجوال
+        constraints = {
+          video: {
+            facingMode,
+            width: { min: 320, ideal: 640, max: 1280 },
+            height: { min: 240, ideal: 480, max: 720 },
+            frameRate: { min: 10, ideal: 15, max: 20 },
+            aspectRatio: { ideal: 4/3 }
+          },
+          audio: false
+        };
+      } else {
+        // إعدادات للكمبيوتر
+        constraints = {
+          video: {
+            facingMode,
+            width: { ideal: 640 },
+            height: { ideal: 480 },
+            frameRate: { ideal: 30 }
+          },
+          audio: false
+        };
+      }
+      
+      console.log('📱 Camera constraints for', isMobile ? 'mobile' : 'desktop', ':', constraints);
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       streamRef.current = stream;
       
       videoRef.current.srcObject = stream;
-      await new Promise((resolve) => {
-        videoRef.current!.onloadedmetadata = () => {
-          videoRef.current!.play();
-          resolve(null);
+      
+      // انتظار تحميل البيانات الوصفية للفيديو
+      await new Promise<void>((resolve, reject) => {
+        if (!videoRef.current) {
+          reject(new Error('Video ref is null'));
+          return;
+        }
+        
+        const video = videoRef.current;
+        
+        video.onloadedmetadata = () => {
+          console.log('📱 Video metadata loaded:', {
+            width: video.videoWidth,
+            height: video.videoHeight,
+            duration: video.duration
+          });
+          
+          video.play().then(() => {
+            console.log('📱 Video playback started');
+            resolve();
+          }).catch(reject);
         };
+        
+        video.onerror = () => {
+          reject(new Error('Failed to load video'));
+        };
+        
+        // timeout للأمان
+        setTimeout(() => {
+          reject(new Error('Video loading timeout'));
+        }, 10000);
       });
 
-      // إعداد MediaPipe Hands
+      // إعداد MediaPipe Hands مع إعدادات محسنة للجوال
       const hands = new Hands({
         locateFile: (file) => {
           return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
         }
       });
 
-      // إعدادات MediaPipe محسنة للجوال
-      const mobileSettings = {
-        maxNumHands: 1,
-        modelComplexity: (isMobile ? 0 : 1) as 0 | 1, // تقليل التعقيد للجوال
-        minDetectionConfidence: isMobile ? 0.5 : 0.7,
-        minTrackingConfidence: isMobile ? 0.4 : 0.5,
-        selfieMode: facingMode === 'user'
-      };
+      // إعدادات MediaPipe مُحسنة خصيصاً للجوال
+      let handsOptions;
       
-      console.log('🤖 MediaPipe settings:', mobileSettings);
-      hands.setOptions(mobileSettings);
+      if (isMobile) {
+        handsOptions = {
+          maxNumHands: 1,
+          modelComplexity: 0, // أقل تعقيد للجوال
+          minDetectionConfidence: 0.3, // عتبة أقل للجوال
+          minTrackingConfidence: 0.3, // عتبة أقل للجوال
+          selfieMode: facingMode === 'user'
+        };
+      } else {
+        handsOptions = {
+          maxNumHands: 1,
+          modelComplexity: 1,
+          minDetectionConfidence: 0.7,
+          minTrackingConfidence: 0.5,
+          selfieMode: facingMode === 'user'
+        };
+      }
+      
+      console.log('🤖 MediaPipe settings for', isMobile ? 'mobile' : 'desktop', ':', handsOptions);
+      hands.setOptions(handsOptions);
 
       hands.onResults(onResults);
       handsRef.current = hands;
 
-      // بدء معالجة الإطارات
+      // بدء معالجة الإطارات مع معدل مناسب للجهاز
       processFrame();
       
       setIsLoading(false);
+      console.log('✅ Camera and MediaPipe initialized successfully for', isMobile ? 'mobile' : 'desktop');
+      
     } catch (err) {
-      console.error('Error starting camera:', err);
+      console.error('❌ Error starting camera:', err);
       let errorMessage = 'لا يمكن الوصول إلى الكاميرا';
       
       if (err instanceof Error) {
-        if (err.name === 'NotAllowedError') {
-          errorMessage = 'تم رفض الإذن للوصول إلى الكاميرا';
-        } else if (err.name === 'NotFoundError') {
-          errorMessage = 'لم يتم العثور على كاميرا';
-        } else if (err.name === 'NotSupportedError') {
+        console.error('Error details:', err.message);
+        
+        if (err.name === 'NotAllowedError' || err.message.includes('Permission')) {
+          errorMessage = 'تم رفض الإذن للوصول إلى الكاميرا. يرجى السماح بالوصول للكاميرا من إعدادات المتصفح';
+        } else if (err.name === 'NotFoundError' || err.message.includes('device')) {
+          errorMessage = 'لم يتم العثور على كاميرا. تأكد من وجود كاميرا متصلة';
+        } else if (err.name === 'NotSupportedError' || err.message.includes('support')) {
           errorMessage = 'الكاميرا غير مدعومة في هذا المتصفح';
+        } else if (err.name === 'OverconstrainedError' || err.message.includes('constraint')) {
+          errorMessage = 'إعدادات الكاميرا غير متوافقة. جاري المحاولة بإعدادات مبسطة...';
+          
+          // محاولة مع إعدادات مبسطة
+          setTimeout(() => {
+            startCameraWithBasicSettings();
+          }, 1000);
+          return;
+        } else if (err.message.includes('timeout')) {
+          errorMessage = 'انتهت مهلة تحميل الكاميرا. يرجى إعادة المحاولة';
         }
       }
       
       setError(errorMessage);
+      setIsLoading(false);
+    }
+  };
+
+  // دالة احتياطية للكاميرا بإعدادات أساسية
+  const startCameraWithBasicSettings = async () => {
+    if (!videoRef.current) return;
+
+    try {
+      setError(null);
+      setIsLoading(true);
+
+      const basicConstraints = {
+        video: true,
+        audio: false
+      };
+
+      console.log('📱 Trying with basic camera settings');
+      const stream = await navigator.mediaDevices.getUserMedia(basicConstraints);
+      streamRef.current = stream;
+      videoRef.current.srcObject = stream;
+      
+      await videoRef.current.play();
+
+      // إعداد MediaPipe بإعدادات أساسية
+      const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+      });
+
+      hands.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 0,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+        selfieMode: true
+      });
+
+      hands.onResults(onResults);
+      handsRef.current = hands;
+      processFrame();
+      
+      setIsLoading(false);
+      console.log('✅ Camera started with basic settings');
+      
+    } catch (err) {
+      console.error('❌ Even basic camera failed:', err);
+      setError('فشل في تشغيل الكاميرا حتى مع الإعدادات الأساسية');
       setIsLoading(false);
     }
   };
