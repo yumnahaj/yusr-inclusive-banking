@@ -37,7 +37,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
         />
         
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 sm:mb-6 font-bold leading-tight" id="page-title">
-          {t('main.welcome')} <span className="text-primary">يُسر</span>
+          {t('main.welcome')} <span className="text-white">يُسر</span>
         </h1>
         <p className="text-white/80 text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-14 px-2" role="doc-subtitle">
           {t('main.accessibility.desc')}
