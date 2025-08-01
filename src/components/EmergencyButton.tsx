@@ -53,7 +53,7 @@ const EmergencyButton = () => {
         role="button"
         tabIndex={0}
       >
-           <Wheelchair className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
+           <accessibility className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
       </Button>
 
 
