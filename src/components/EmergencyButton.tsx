@@ -52,7 +52,7 @@ const EmergencyButton = () => {
         role="button"
         tabIndex={0}
       >
-        <span className="text-white text-base sm:text-lg" aria-hidden="true">♿</span>
+        <span className="text-accent-foreground text-base sm:text-lg" aria-hidden="true">♿</span>
       </Button>
 
       {/* WCAG 2.1 - Accessibility controls panel */}
