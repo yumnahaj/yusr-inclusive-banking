@@ -3,7 +3,6 @@ export default {
   'app.title': 'يُسر - تطبيق البنك الرقمي',
   'main.welcome': 'مرحباً بك في',
   'main.traditional': 'البنك التقليدي',
-  'main.traditional.desc': 'استخدم الخدمات المصرفية بالطريقة التقليدية',
   'main.accessibility': 'ذوي الهمم',
   'main.accessibility.desc': 'واجهة مخصصة لذوي الاحتياجات الخاصة',
   'main.security': 'محمي بتقنية أبشر',
