@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Mic, Eye, Hand, CreditCard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface MobilityBankingProps {
   onBack: () => void;
@@ -14,6 +14,11 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
   const [isListening, setIsListening] = useState(false);
   const [showBalance, setShowBalance] = useState(false);
   const [showStatement, setShowStatement] = useState(false);
+  const [eyeTrackingActive, setEyeTrackingActive] = useState(false);
+  const [gazeTimer, setGazeTimer] = useState<number | null>(null);
+  const [gazeProgress, setGazeProgress] = useState(0);
+  const [focusedElement, setFocusedElement] = useState<string | null>(null);
+  const progressIntervalRef = useRef<number | null>(null);
   const [transactions] = useState([
     { date: "2024-01-15", description: "تحويل إلى أحمد محمد", amount: "-500" },
     { date: "2024-01-14", description: "إيداع راتب", amount: "+3000" },
@@ -62,8 +67,55 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
     }
   ];
 
-  const handleVoiceCommand = (action: string) => {
+  // Eye tracking functions
+  const startEyeTracking = (action: string) => {
+    if (controlMethod !== "eye") return;
+    
+    setFocusedElement(action);
+    setGazeProgress(0);
     setIsListening(true);
+    
+    // Start progress animation
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+    
+    progressIntervalRef.current = window.setInterval(() => {
+      setGazeProgress(prev => {
+        const newProgress = prev + (100 / 30); // 30 steps for 3 seconds
+        if (newProgress >= 100) {
+          executeAction(action);
+          return 100;
+        }
+        return newProgress;
+      });
+    }, 100);
+    
+    // Set timer for 3 seconds
+    const timer = window.setTimeout(() => {
+      executeAction(action);
+    }, 3000);
+    
+    setGazeTimer(timer);
+  };
+
+  const stopEyeTracking = () => {
+    if (gazeTimer) {
+      clearTimeout(gazeTimer);
+      setGazeTimer(null);
+    }
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+    setGazeProgress(0);
+    setFocusedElement(null);
+    setIsListening(false);
+  };
+
+  const executeAction = (action: string) => {
+    // Clear timers and progress
+    stopEyeTracking();
     
     // Simulate vibration feedback
     if ('vibrate' in navigator) {
@@ -100,6 +152,33 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
     
     setTimeout(() => setIsListening(false), 2000);
   };
+
+  const handleVoiceCommand = (action: string) => {
+    if (controlMethod === "eye") {
+      return; // Eye tracking handled separately
+    }
+    executeAction(action);
+  };
+
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      if (gazeTimer) {
+        clearTimeout(gazeTimer);
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, [gazeTimer]);
+
+  // Enable eye tracking when method changes
+  useEffect(() => {
+    setEyeTrackingActive(controlMethod === "eye");
+    if (controlMethod !== "eye") {
+      stopEyeTracking();
+    }
+  }, [controlMethod]);
 
   return (
     <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
@@ -153,7 +232,7 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
           </div>
         </div>
 
-        {/* Voice Status */}
+        {/* Voice/Eye Tracking Status */}
         {isListening && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -162,12 +241,24 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
           >
             <Card className="bg-primary/10 border-primary">
               <CardContent className="p-6 text-center">
-                <div className="flex items-center justify-center gap-3">
-                  <Mic className="w-8 h-8 text-primary animate-pulse" />
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  {controlMethod === "voice" ? (
+                    <Mic className="w-8 h-8 text-primary animate-pulse" />
+                  ) : (
+                    <Eye className="w-8 h-8 text-primary animate-pulse" />
+                  )}
                   <p className="text-primary font-bold text-xl">
                     {controlMethod === "voice" ? "🎤 أستمع إليك..." : "👁️ أتتبع عينيك..."}
                   </p>
                 </div>
+                {controlMethod === "eye" && focusedElement && (
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
+                    <div 
+                      className="bg-primary h-2 rounded-full transition-all duration-100"
+                      style={{ width: `${gazeProgress}%` }}
+                    ></div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -180,8 +271,12 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
           className="mb-6 sm:mb-8 md:mb-12 mx-1 sm:mx-0"
         >
           <Card 
-            className="text-center p-4 sm:p-6 md:p-8 lg:p-12 border-2 sm:border-4 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300"
+            className={`text-center p-4 sm:p-6 md:p-8 lg:p-12 border-2 sm:border-4 border-primary cursor-pointer hover:bg-primary/5 transition-all duration-300 ${
+              focusedElement === "balance" ? "bg-primary/10 ring-2 ring-primary" : ""
+            }`}
             onClick={() => handleVoiceCommand("balance")}
+            onMouseEnter={() => controlMethod === "eye" && startEyeTracking("balance")}
+            onMouseLeave={() => controlMethod === "eye" && stopEyeTracking()}
             role="button"
             tabIndex={0}
           >
@@ -284,7 +379,13 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary">
+              <Card 
+                className={`overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 border-2 hover:border-primary ${
+                  focusedElement === option.action ? "bg-primary/10 ring-2 ring-primary border-primary" : ""
+                }`}
+                onMouseEnter={() => controlMethod === "eye" && startEyeTracking(option.action)}
+                onMouseLeave={() => controlMethod === "eye" && stopEyeTracking()}
+              >
                 <CardContent className="p-6 sm:p-8">
                   <Button
                     onClick={() => handleVoiceCommand(option.action)}
@@ -297,6 +398,9 @@ const MobilityBanking = ({ onBack }: MobilityBankingProps) => {
                       </div>
                       <div className="text-right flex-1">
                         <h3 className="text-xl sm:text-2xl font-bold mb-2">{option.title}</h3>
+                        {controlMethod === "eye" && (
+                          <p className="text-sm text-muted-foreground mt-2">انظر هنا لمدة 3 ثوان</p>
+                        )}
                       </div>
                     </div>
                   </Button>
