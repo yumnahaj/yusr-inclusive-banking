@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Phone } from "lucide-react";
+import { Wheelchair } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import AccessibilityControls from "./AccessibilityControls";
@@ -53,7 +54,7 @@ const EmergencyButton = () => {
         tabIndex={0}
       >
         <span>
-          <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
+          <Wheelchair className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
         </span>
 
       </Button>
