@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Phone } from "lucide-react";
-import { accessibility  } from "lucide-react";
+import { Accessibility } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import AccessibilityControls from "./AccessibilityControls";
@@ -53,7 +53,7 @@ const EmergencyButton = () => {
         role="button"
         tabIndex={0}
       >
-           <accessibility className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
+           <Accessibility className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
       </Button>
 
 
