@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye, Type, Volume2, Contrast, ZoomIn, ZoomOut, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSpeech } from "@/hooks/useSpeech";
 
 interface AccessibilityControlsProps {
   onClose?: () => void;
@@ -13,6 +14,7 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
   const [highContrast, setHighContrast] = useState(false);
   const [readingMode, setReadingMode] = useState(false);
   const { currentLanguage, toggleLanguage, t } = useLanguage();
+  const { speakText, isPlaying } = useSpeech();
 
   // WCAG 2.1 - Font size controls (minimum 16px, maximum 24px)
   const increaseFontSize = () => {
@@ -40,12 +42,8 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
   };
 
   // WCAG 2.1 - Text-to-speech for reading mode
-  const speakText = (text: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      speechSynthesis.speak(utterance);
-    }
+  const handleSpeakText = async (text: string) => {
+    await speakText(text);
   };
 
 
@@ -166,7 +164,7 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => speakText(currentLanguage === 'ar' ? "تم تفعيل قارئ النصوص" : "Text-to-speech activated")}
+              onClick={() => handleSpeakText(currentLanguage === 'ar' ? "تم تفعيل قارئ النصوص" : "Text-to-speech activated")}
               aria-label={t('controls.demo')}
             >
               {t('controls.demo')}

@@ -3,6 +3,7 @@ import { ArrowLeft, Volume2, Mic, Eye, Palette, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect, useRef } from "react";
+import { useSpeech } from "@/hooks/useSpeech";
 interface BlindBankingProps {
   onBack: () => void;
 }
@@ -10,13 +11,11 @@ const BlindBanking = ({
   onBack
 }: BlindBankingProps) => {
   const [balance] = useState("12,345");
-  const [isListening, setIsListening] = useState(false);
-  
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [clickCount, setClickCount] = useState(0);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const { speakText, startRecording, stopRecording, isPlaying, isRecording, isLoading } = useSpeech();
   const bankingOptions = [{
     icon: <Volume2 className="w-8 h-8" />,
     title: "كشف الحساب",
@@ -35,14 +34,11 @@ const BlindBanking = ({
   }];
   useEffect(() => {
     const welcomeText = "مرحباً بك في واجهة البنك للمكفوفين. الخدمات المتاحة: رصيدك الحالي، كشف الحساب، تحويل أموال. لتنفيذ أي خدمة اضغط على الزر مرتين أو قل نعم.";
-    speakText(welcomeText);
-    return () => {
-      // Stop speech when component unmounts
-      if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
-      }
-    };
-  }, []);
+    const timer = setTimeout(() => {
+      speakText(welcomeText);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [speakText]);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
@@ -58,76 +54,7 @@ const BlindBanking = ({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-  const speakText = (text: string) => {
-    // Stop any currently playing speech
-    if (speechSynthesis.speaking) {
-      speechSynthesis.cancel();
-    }
-    if ('speechSynthesis' in window) {
-      // Better mobile speech synthesis
-      const loadVoices = () => {
-        const utterance = new SpeechSynthesisUtterance(text);
-
-        // Enhanced mobile support
-        const voices = speechSynthesis.getVoices();
-        const arabicVoice = voices.find(voice => voice.lang.includes('ar') || voice.name.includes('Arabic') || voice.name.includes('Saudi'));
-        if (arabicVoice) {
-          utterance.voice = arabicVoice;
-        }
-
-        // Optimized settings for mobile
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.7; // Slower for better clarity
-        utterance.pitch = 1.1;
-        utterance.volume = 1;
-
-        // Enhanced error handling
-        utterance.onstart = () => {
-          console.log('Speech started successfully');
-          setIsListening(true);
-        };
-        utterance.onend = () => {
-          console.log('Speech ended');
-          setIsListening(false);
-        };
-        utterance.onerror = event => {
-          console.error('Speech error:', event.error);
-          setIsListening(false);
-
-          // Show visual feedback if speech fails
-          const fallbackMessage = `تعذر تشغيل الصوت: ${text}`;
-          console.log(fallbackMessage);
-        };
-        speechRef.current = utterance;
-
-        // Additional mobile fixes
-        try {
-          speechSynthesis.speak(utterance);
-        } catch (error) {
-          console.error('Speech synthesis failed:', error);
-          setIsListening(false);
-        }
-      };
-
-      // Improved voice loading for mobile
-      const voices = speechSynthesis.getVoices();
-      if (voices.length === 0) {
-        // Wait for voices to load
-        speechSynthesis.addEventListener('voiceschanged', loadVoices, {
-          once: true
-        });
-        // Fallback timeout
-        setTimeout(loadVoices, 1000);
-      } else {
-        loadVoices();
-      }
-    } else {
-      console.warn('Speech synthesis not supported on this device');
-      // Visual feedback when speech is not available
-      setIsListening(false);
-    }
-  };
+  }, [speakText]);
   const handleDoubleClick = () => {
     if (pendingAction) {
       executeAction(pendingAction);
@@ -172,45 +99,61 @@ const BlindBanking = ({
       setPendingAction(null);
     }
   };
-  const executeAction = (action: string) => {
+  const executeAction = async (action: string) => {
     switch (action) {
       case "رصيدي":
-        speakText(`رصيدك الحالي ${balance} ريال سعودي`);
+        await speakText(`رصيدك الحالي ${balance} ريال سعودي`);
         break;
       case "كشف الحساب":
-        speakText("آخر العمليات: تحويل 500 ريال إلى أحمد محمد يوم الأحد، إيداع 1000 ريال يوم السبت، سحب 200 ريال من الصراف الآلي يوم الجمعة");
+        await speakText("آخر العمليات: تحويل 500 ريال إلى أحمد محمد يوم الأحد، إيداع 1000 ريال يوم السبت، سحب 200 ريال من الصراف الآلي يوم الجمعة");
         break;
       case "تحويل أموال":
-        speakText("قل اسم المستفيد والمبلغ. مثال: حول 100 ريال إلى سارة أحمد");
-        setIsListening(true);
-        setTimeout(() => setIsListening(false), 5000);
+        await speakText("قل اسم المستفيد والمبلغ. مثال: حول 100 ريال إلى سارة أحمد");
+        // Start recording for money transfer
+        try {
+          await startRecording();
+          setTimeout(async () => {
+            const transcript = await stopRecording();
+            if (transcript) {
+              await speakText(`تم استلام الأمر: ${transcript}. سيتم معالجة التحويل.`);
+            }
+          }, 5000);
+        } catch (error) {
+          await speakText("حدث خطأ في تسجيل الصوت. حاول مرة أخرى.");
+        }
         break;
     }
   };
 
   // Voice recognition for confirmation
   useEffect(() => {
-    if (awaitingConfirmation && 'webkitSpeechRecognition' in window) {
-      const recognition = new (window as any).webkitSpeechRecognition();
-      recognition.lang = 'ar-SA';
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        if (transcript.includes('نعم') || transcript.includes('موافق')) {
-          if (pendingAction) {
-            executeAction(pendingAction);
-            setAwaitingConfirmation(false);
-            setPendingAction(null);
-          }
+    if (awaitingConfirmation) {
+      const handleVoiceConfirmation = async () => {
+        try {
+          await startRecording();
+          // Record for 3 seconds
+          setTimeout(async () => {
+            const transcript = await stopRecording();
+            if (transcript) {
+              console.log('Voice input:', transcript);
+              
+              if (transcript.includes('نعم') || transcript.includes('موافق') || transcript.includes('تأكيد')) {
+                if (pendingAction) {
+                  await executeAction(pendingAction);
+                  setAwaitingConfirmation(false);
+                  setPendingAction(null);
+                }
+              }
+            }
+          }, 3000);
+        } catch (error) {
+          console.error('Speech recognition error:', error);
         }
       };
-      recognition.start();
-      return () => {
-        recognition.stop();
-      };
+
+      handleVoiceConfirmation();
     }
-  }, [awaitingConfirmation, pendingAction]);
+  }, [awaitingConfirmation, pendingAction, startRecording, stopRecording, executeAction]);
   return <div className="min-h-screen p-2 sm:p-6 transition-all duration-500" role="main" aria-label="واجهة البنك للمكفوفين">
       <motion.div initial={{
       opacity: 0,
@@ -239,14 +182,18 @@ const BlindBanking = ({
         </div>
 
         {/* Voice Status */}
-        {isListening && <div className="mb-6 sm:mb-8 text-center">
+        {(isRecording || isLoading || isPlaying) && <div className="mb-6 sm:mb-8 text-center">
             <div className="rounded-xl p-6 sm:p-8 bg-primary/20">
-              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-primary">🎤 أستمع إليك الآن...</p>
+              <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-primary">
+                {isRecording ? '🎤 أستمع إليك الآن...' : 
+                 isLoading ? '⚙️ جاري المعالجة...' : 
+                 '🔊 جاري التشغيل...'}
+              </p>
             </div>
           </div>}
         
         {/* Confirmation Status */}
-        {awaitingConfirmation && <div className="mb-6 sm:mb-8 text-center">
+        {awaitingConfirmation && !isRecording && !isLoading && <div className="mb-6 sm:mb-8 text-center">
             <div className="rounded-xl p-6 sm:p-8 bg-accent/20 border border-accent">
               <p className="font-bold text-xl sm:text-2xl lg:text-3xl text-accent-foreground">
                 🔄 انتظار التأكيد - اضغط مرة أخرى أو قل "نعم"
