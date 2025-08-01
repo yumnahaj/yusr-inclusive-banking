@@ -158,7 +158,7 @@ const DeafBanking = ({ onBack }: DeafBankingProps) => {
           
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
             <img src="/lovable-uploads/195fdd24-a424-43bb-b88e-b79ef654b40e.png" alt="يُسر" className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />
-            <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center">يُسر للصم والبكم</h1>
+            <h1 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-primary text-center">يُسر</h1>
           </div>
 
           {/* زر تفعيل كاميرا الإيماءات */}

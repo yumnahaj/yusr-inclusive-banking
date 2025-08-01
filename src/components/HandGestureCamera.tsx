@@ -1,11 +1,8 @@
-import { useEffect } from 'react'; // تأكدي إنها مضافة فوق
 import { motion } from "framer-motion";
-import { Camera, CameraOff, Hand, RotateCcw, Smartphone } from "lucide-react";
+import { Camera, CameraOff, Hand, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useOptimizedHandGestureRecognition, GestureType } from "@/hooks/useOptimizedHandGestureRecognition";
-import FallbackGestureInterface from "./FallbackGestureInterface";
-import GestureErrorBoundary from "./GestureErrorBoundary";
+import { useHandGestureRecognition, GestureType } from "@/hooks/useHandGestureRecognition";
 import { useState } from "react";
 
 interface HandGestureCameraProps {
@@ -17,7 +14,6 @@ interface HandGestureCameraProps {
 const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestureCameraProps) => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
-  const [showFallback, setShowFallback] = useState(false);
 
   const { 
     videoRef, 
@@ -26,10 +22,8 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
     error, 
     currentGesture,
     stopCamera,
-    startCamera,
-    capabilities,
-    isInitialized
-  } = useOptimizedHandGestureRecognition({
+    startCamera
+  } = useHandGestureRecognition({
     onGestureDetected,
     isActive: isCameraActive,
     facingMode
@@ -74,24 +68,14 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
 
   if (!isVisible) return null;
 
-
   return (
-    <GestureErrorBoundary
-      fallback={
-        <FallbackGestureInterface
-          onGestureDetected={onGestureDetected}
-          isVisible={isVisible}
-          onClose={onClose}
-        />
-      }
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+      onClick={onClose}
     >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-        onClick={onClose}
-      >
       <Card 
         className="w-full max-w-2xl bg-white"
         onClick={(e) => e.stopPropagation()}
@@ -109,7 +93,7 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
 
           {/* منطقة الكاميرا */}
           <div className="relative mb-6">
-            <div className="bg-gray-100 rounded-lg overflow-hidden w-full max-w-md aspect-[4/3] flex items-center justify-center">
+            <div className="bg-gray-100 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
               {isCameraActive ? (
                 <div className="relative w-full h-full">
                   <video
@@ -122,7 +106,8 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
                   <canvas
                     ref={canvasRef}
                     className={`absolute top-0 left-0 w-full h-full ${facingMode === 'user' ? 'transform scale-x-[-1]' : ''}`}
-                    
+                    width={640}
+                    height={480}
                   />
                   {/* مؤشر نوع الكاميرا */}
                   <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
@@ -185,20 +170,15 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
           {/* رسائل الحالة */}
           {isLoading && (
             <div className="text-center py-4">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-primary">جاري تحميل الكاميرا...</p>
-              </div>
-              {capabilities.isMobile && (
-                <p className="text-sm text-gray-600">قد يستغرق الأمر وقتاً أطول على الجوال</p>
-              )}
+              <p className="text-primary">جاري تحميل الكاميرا...</p>
             </div>
           )}
 
- 
-          
-       
-      
+          {error && (
+            <div className="text-center py-4">
+              <p className="text-red-600">{error}</p>
+            </div>
+          )}
 
           {/* دليل الإيماءات */}
           <div className="bg-gray-50 rounded-lg p-4">
@@ -234,7 +214,6 @@ const HandGestureCamera = ({ onGestureDetected, isVisible, onClose }: HandGestur
         </CardContent>
       </Card>
     </motion.div>
-    </GestureErrorBoundary>
   );
 };
 
