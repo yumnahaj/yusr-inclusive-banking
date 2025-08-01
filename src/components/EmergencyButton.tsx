@@ -53,11 +53,9 @@ const EmergencyButton = () => {
         role="button"
         tabIndex={0}
       >
-        <span>
-          <Wheelchair className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
-        </span>
-
+           <Wheelchair className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" aria-hidden="true" />
       </Button>
+
 
       {/* WCAG 2.1 - Accessibility controls panel */}
       {showAccessibilityControls && (
