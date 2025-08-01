@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Phone } from "lucide-react";
-import { Wheelchair } from "lucide-react";
+import { accessibility  } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import AccessibilityControls from "./AccessibilityControls";
