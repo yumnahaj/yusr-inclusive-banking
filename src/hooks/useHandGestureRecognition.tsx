@@ -285,12 +285,12 @@ export const useHandGestureRecognition = ({ onGestureDetected, isActive, facingM
         }, 10000);
       });
 
-      // إعداد MediaPipe Hands مع إعدادات محسنة للجوال
-      const hands = new Hands({
-        locateFile: (file) => {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+     const hands = new Hands({
+       locateFile: (file) => {
+        return `https://lkgbogpytkwpdgwywrrz.supabase.co/storage/v1/object/public/hand/${file}`;
         }
       });
+
 
       // إعدادات MediaPipe مُحسنة خصيصاً للجوال
       let handsOptions;
