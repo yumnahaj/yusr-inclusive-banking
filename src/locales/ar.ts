@@ -1,7 +1,7 @@
 export default {
   // Main Navigation
   'app.title': 'يُسر - تطبيق البنك الرقمي',
-  'main.welcome': 'مرحباً بك في',
+  'main.welcome': 'مرحباً بك في يُسر ',
   'main.traditional': 'البنك التقليدي',
   'main.accessibility': 'ذوي الهمم',
   'main.accessibility.desc': 'واجهة مخصصة لذوي الاحتياجات الخاصة',
