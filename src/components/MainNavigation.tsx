@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import yusrLogo from "@/assets/yusr-logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import EyeTrackingButton from "@/components/EyeTrackingButton";
 
 interface MainNavigationProps {
   onSelectBanking: () => void;
@@ -52,13 +53,13 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
               whileHover: {},
               whileTap: {}
             })}
-          >
-            <div
+           >
+            <EyeTrackingButton
+              trackingId="traditional-banking"
               onClick={onSelectBanking}
-              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
+              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px]"
               aria-label="الدخول للبنك التقليدي - الخدمات البنكية العادية"
-              role="menuitem"
-              tabIndex={0}
+              variant="ghost"
             >
               <div className="flex items-center gap-4 sm:gap-6 w-full">
                 <Building2 className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
@@ -66,19 +67,19 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 truncate">{t('main.traditional')}</h3>
                 </div>
               </div>
-            </div>
+            </EyeTrackingButton>
           </motion.div>
 
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-          >
-            <div
+           >
+            <EyeTrackingButton
+              trackingId="accessibility-banking"
               onClick={onSelectAccessibility}
-              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px] cursor-pointer"
+              className="w-full h-auto p-6 sm:p-8 md:p-10 bg-transparent text-white btn-accessible min-h-[80px] sm:min-h-[100px]"
               aria-label="الدخول لواجهة ذوي الهمم - خدمات متخصصة وسهلة الوصول"
-              role="menuitem"
-              tabIndex={0}
+              variant="ghost"
             >
               <div className="flex items-center gap-4 sm:gap-6 w-full">
                 <Accessibility className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0" />
@@ -87,7 +88,7 @@ const MainNavigation = ({ onSelectBanking, onSelectAccessibility }: MainNavigati
                   
                 </div>
               </div>
-            </div>
+            </EyeTrackingButton>
           </motion.div>
 
           <motion.div

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Eye, Type, Volume2, Contrast, ZoomIn, ZoomOut, Globe } from "lucide-react";
+import { Eye, Type, Volume2, Contrast, ZoomIn, ZoomOut, Globe, Camera } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSpeech } from "@/hooks/useSpeech";
+import { useEyeTracking } from "@/hooks/useEyeTracking";
 
 interface AccessibilityControlsProps {
   onClose?: () => void;
@@ -15,6 +16,7 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
   const [readingMode, setReadingMode] = useState(false);
   const { currentLanguage, toggleLanguage, t } = useLanguage();
   const { speakText, isPlaying } = useSpeech();
+  const { isTracking, startTracking, stopTracking } = useEyeTracking();
 
   // WCAG 2.1 - Font size controls (minimum 16px, maximum 24px)
   const increaseFontSize = () => {
@@ -186,7 +188,34 @@ const AccessibilityControls = ({ onClose }: AccessibilityControlsProps) => {
               {currentLanguage === 'ar' ? "English" : "العربية"}
             </Button>
           </div>
+
+          {/* Eye Tracking Control */}
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <Camera className="w-4 h-4" />
+              {currentLanguage === 'ar' ? 'تتبع العين' : 'Eye Tracking'}
+            </span>
+            <Button
+              variant={isTracking ? "default" : "outline"}
+              size="sm"
+              onClick={isTracking ? stopTracking : startTracking}
+              aria-label={isTracking ? "إيقاف تتبع العين" : "تشغيل تتبع العين"}
+            >
+              {isTracking ? (currentLanguage === 'ar' ? 'مُفعل' : 'Active') : (currentLanguage === 'ar' ? 'مُعطل' : 'Inactive')}
+            </Button>
+          </div>
         </div>
+
+        {isTracking && (
+          <div className="mt-4 p-2 bg-primary/10 rounded-lg text-sm">
+            <p className="text-center">
+              {currentLanguage === 'ar' 
+                ? 'انظر إلى الأزرار لمدة 3 ثوان لتفعيلها' 
+                : 'Look at buttons for 3 seconds to activate them'
+              }
+            </p>
+          </div>
+        )}
 
         <div className="mt-4 pt-4 border-t text-xs text-muted-foreground">
           <p>هذه الإعدادات تتوافق مع معايير WCAG 2.1 لسهولة الوصول</p>

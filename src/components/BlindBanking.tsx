@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect, useRef } from "react";
 import { useSpeech } from "@/hooks/useSpeech";
+import EyeTrackingButton from "@/components/EyeTrackingButton";
 interface BlindBankingProps {
   onBack: () => void;
 }
@@ -168,10 +169,18 @@ const BlindBanking = ({
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <div className="flex justify-end mb-4">
-            <Button onClick={onBack} variant="outline" size="lg" className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible" aria-label="العودة للصفحة السابقة" onFocus={() => speakText("زر العودة")}>
+            <EyeTrackingButton 
+              trackingId="back-button"
+              onClick={onBack} 
+              variant="outline" 
+              size="lg" 
+              className="flex items-center gap-3 text-lg sm:text-xl px-6 py-4 sm:px-8 sm:py-6 transition-all duration-300 min-h-[56px] sm:min-h-[64px] touch-manipulation btn-accessible" 
+              aria-label="العودة للصفحة السابقة" 
+              onFocus={() => speakText("زر العودة")}
+            >
               <ArrowLeft className="w-6 h-6 sm:w-8 sm:h-8" />
               العودة
-            </Button>
+            </EyeTrackingButton>
           </div>
           
           <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4">
